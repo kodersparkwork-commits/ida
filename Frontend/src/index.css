@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --dental-sky: #e6fffb;
+  --dental-mint: #99f6e4;
+  --dental-teal: #0f9ba8;
+  --dental-emerald: #10b981;
+  --dental-navy: #0b3b49;
+  --dental-slate: #0f172a;
+  --card-shadow: 0 25px 60px -25px rgba(15, 155, 168, 0.45);
+}
+
+body {
+  @apply text-slate-900;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #f0fffe 0%, #f7fbff 50%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+main {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(15, 155, 168, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.05) 0%, transparent 35%);
+}
+
+::selection {
+  background: rgba(15, 155, 168, 0.2);
+  color: var(--dental-navy);
+}
+
+.btn-brand {
+  @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-transform;
+  background: linear-gradient(120deg, #0ea5e9, #0f9ba8, #10b981);
+  background-size: 200% 200%;
+}
+
+.btn-brand:hover {
+  transform: translateY(-1px) scale(1.01);
+  background-position: 100% 0;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 font-semibold border border-slate-200 text-slate-800 hover:border-cyan-300 transition;
+}
+
+.card-glass {
+  @apply bg-white/80 backdrop-blur border border-white/60 rounded-3xl shadow-[var(--card-shadow)];
+}
+
+.badge-pill {
+  @apply inline-flex items-center gap-2 rounded-full px-4 py-1 text-sm font-medium;
+  background: rgba(15, 155, 168, 0.12);
+  color: var(--dental-teal);
+}
+
+.alert {
+  @apply rounded-2xl border px-5 py-4 text-sm font-medium shadow-sm flex items-center gap-2;
+}
+
+.alert-success {
+  @apply border-emerald-200 bg-emerald-50/80 text-emerald-800;
+}
+
+.alert-error {
+  @apply border-rose-200 bg-rose-50/80 text-rose-700;
+}
+
+.floating-shape {
+  position: absolute;
+  inset: auto;
+  width: 280px;
+  height: 280px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(15, 155, 168, 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  animation: float 12s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(20px, -30px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
