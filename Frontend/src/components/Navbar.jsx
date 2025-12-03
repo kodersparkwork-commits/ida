@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
   const [courseMenuOpen, setCourseMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
