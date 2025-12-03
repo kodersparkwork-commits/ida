@@ -10,25 +10,28 @@ cloudinary.config({
 });
 
 // storage for images (already used in your project maybe)
-const imageStorage = new CloudinaryStorage({
+// unified storage
+const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'course_thumbnails',
-    allowed_formats: ['jpg', 'jpeg', 'png'],
+  params: async (req, file) => {
+    if (file.fieldname === 'thumbnail') {
+      return {
+        folder: 'course_thumbnails',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+      };
+    } else if (file.fieldname === 'videos' || file.fieldname === 'video') {
+      return {
+        folder: 'course_videos',
+        resource_type: 'video',
+        allowed_formats: ['mp4', 'mov', 'm4v', 'webm'],
+      };
+    }
+    return {
+      folder: 'misc',
+    };
   },
 });
 
-// storage for videos
-const videoStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'course_videos',
-    resource_type: 'video',
-    allowed_formats: ['mp4', 'mov', 'm4v', 'webm'],
-  },
-});
+const upload = multer({ storage });
 
-const imageUpload = multer({ storage: imageStorage });
-const videoUpload = multer({ storage: videoStorage });
-
-module.exports = { cloudinary, imageUpload, videoUpload };
+module.exports = { cloudinary, upload };

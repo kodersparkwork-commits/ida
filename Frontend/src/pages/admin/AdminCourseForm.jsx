@@ -48,7 +48,7 @@ export default function AdminCourseForm() {
 
   // ⭐ Add New Video Field
   const addVideo = () => {
-    setVideos([...videos, { title: '', url: '' }]);
+    setVideos([...videos, { title: '', video_url: '' }]);
   };
 
   // ⭐ Remove a Video Field
@@ -65,31 +65,27 @@ export default function AdminCourseForm() {
       form.append('short_description', short_description);
       form.append('description', description);
       form.append('price_usd', price_usd);
-  
+
       if (thumbnail) form.append('thumbnail', thumbnail);
-  
+
       // Append video URLs from manual input
-      form.append('videos', JSON.stringify(videos.filter(v => v.url).map(v => ({ title: v.title, url: v.url }))));
-  
-      // Append uploaded files
-      const videoFiles = document.querySelector('input[name="videos"]').files;
-      for (let file of videoFiles) {
-        form.append('videos', file); // matches multer.array('videos')
-      }
-  
+      form.append('video_data', JSON.stringify(videos.filter(v => v.video_url).map(v => ({ title: v.title, video_url: v.video_url }))));
+
+
+
       if (id) {
         await API.put(`/api/admin/courses/${id}`, form, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
         await API.post('/api/admin/courses', form, { headers: { 'Content-Type': 'multipart/form-data' } });
       }
-  
+
       navigate('/admin');
     } catch (err) {
       console.error(err);
       alert('Save failed');
     }
   };
-  
+
 
   return (
     <div className="min-h-screen py-20">
@@ -97,39 +93,39 @@ export default function AdminCourseForm() {
         <h1 className="text-2xl font-bold mb-4">{id ? 'Edit Course' : 'Add Course'}</h1>
 
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow space-y-4">
-          
+
           {/* Title */}
-          <input 
-            value={title} 
-            onChange={(e)=>setTitle(e.target.value)} 
-            placeholder="Title" required 
-            className="w-full px-3 py-2 border rounded" 
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title" required
+            className="w-full px-3 py-2 border rounded"
           />
 
           {/* Short Description */}
-          <input 
-            value={short_description} 
-            onChange={(e)=>setShortDescription(e.target.value)} 
-            placeholder="Short description" 
-            className="w-full px-3 py-2 border rounded" 
+          <input
+            value={short_description}
+            onChange={(e) => setShortDescription(e.target.value)}
+            placeholder="Short description"
+            className="w-full px-3 py-2 border rounded"
           />
 
           {/* Full Description */}
-          <textarea 
-            value={description} 
-            onChange={(e)=>setDescription(e.target.value)} 
-            placeholder="Description" 
-            className="w-full px-3 py-2 border rounded" 
-            rows="6" 
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+            className="w-full px-3 py-2 border rounded"
+            rows="6"
           />
 
           {/* Price */}
-          <input 
-            type="number" 
-            value={price_usd} 
-            onChange={(e)=>setPriceUsd(e.target.value)} 
-            placeholder="Price USD" 
-            className="w-full px-3 py-2 border rounded" 
+          <input
+            type="number"
+            value={price_usd}
+            onChange={(e) => setPriceUsd(e.target.value)}
+            placeholder="Price USD"
+            className="w-full px-3 py-2 border rounded"
           />
 
           {/* Thumbnail */}
@@ -149,15 +145,15 @@ export default function AdminCourseForm() {
                   className="w-full px-3 py-2 border rounded"
                 />
 
-               <input
-                value={video.video_url}
-                onChange={(e) => handleVideoChange(index, "video_url", e.target.value)}
-                placeholder="Video URL"
-                className="w-full px-3 py-2 border rounded"
-               />
+                <input
+                  value={video.video_url}
+                  onChange={(e) => handleVideoChange(index, "video_url", e.target.value)}
+                  placeholder="Video URL"
+                  className="w-full px-3 py-2 border rounded"
+                />
 
 
-                <button 
+                <button
                   type="button"
                   onClick={() => removeVideo(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded"
@@ -167,8 +163,8 @@ export default function AdminCourseForm() {
               </div>
             ))}
 
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={addVideo}
               className="px-4 py-2 bg-green-600 text-white rounded"
             >

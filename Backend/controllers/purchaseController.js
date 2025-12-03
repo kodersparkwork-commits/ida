@@ -3,6 +3,7 @@ const Course = require("../models/Course");
 const Enrollment = require("../models/Enrollment");
 
 // ⭐ BUY COURSE
+// ⭐ BUY COURSE
 exports.purchaseCourse = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -11,14 +12,11 @@ exports.purchaseCourse = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
-    const user = await User.findById(userId);
-
-    if (user.purchasedCourses.includes(courseId)) {
+    // Check if already enrolled
+    const existing = await Enrollment.findOne({ user_id: userId, course_id: courseId, status: 'active' });
+    if (existing) {
       return res.status(400).json({ message: "Course already purchased" });
     }
-
-    user.purchasedCourses.push(courseId);
-    await user.save();
 
     // Create Enrollment Record
     const expiresAt = new Date();
@@ -42,10 +40,12 @@ exports.purchaseCourse = async (req, res) => {
 // ⭐ MY PURCHASED COURSES
 exports.getMyCourses = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id)
-      .populate("purchasedCourses");
+    const enrollments = await Enrollment.find({ user_id: req.user._id, status: 'active' })
+      .populate("course_id");
 
-    res.json(user.purchasedCourses);
+    const courses = enrollments.map(e => e.course_id).filter(Boolean);
+
+    res.json(courses);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -56,11 +56,13 @@ exports.canWatch = async (req, res) => {
   try {
     const { courseId } = req.params;
 
-    const user = await User.findById(req.user._id);
+    const enrollment = await Enrollment.findOne({
+      user_id: req.user._id,
+      course_id: courseId,
+      status: 'active'
+    });
 
-    const hasAccess = user.purchasedCourses.includes(courseId);
-
-    res.json({ canWatch: hasAccess });
+    res.json({ canWatch: !!enrollment });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

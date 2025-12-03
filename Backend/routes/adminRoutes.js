@@ -3,14 +3,14 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 const courseController = require("../controllers/courseController");
-const upload = require("../middleware/uploadMiddleware");
+
 const { protect, adminOnly } = require("../middleware/adminMiddleware");
 
 const multer = require("multer");
-const uploadVideo = multer({ storage: multer.memoryStorage() }).single("video");
+// const uploadVideo = multer({ storage: multer.memoryStorage() }).single("video");
 const Course = require("../models/Course");
 const cloudinary = require("cloudinary").v2;
-const { imageUpload, videoUpload } = require('../config/cloudinary');
+const { upload } = require('../config/cloudinary');
 
 // =========================
 // ADMIN REGISTER (POSTMAN)
@@ -58,8 +58,7 @@ router.post(
   '/courses',
   protect,
   adminOnly,
-  imageUpload.single('thumbnail'),
-  videoUpload.array('videos', 10), // allow max 10 videos at once
+  upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'videos', maxCount: 10 }]),
   courseController.createCourse
 );
 
@@ -68,8 +67,7 @@ router.put(
   '/courses/:id',
   protect,
   adminOnly,
-  imageUpload.single('thumbnail'),
-  videoUpload.array('videos', 10),
+  upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'videos', maxCount: 10 }]),
   courseController.updateCourse
 );
 router.delete("/courses/:id", protect, adminOnly, courseController.deleteCourse);
@@ -83,33 +81,16 @@ router.post(
   "/upload-video",
   protect,
   adminOnly,
-  uploadVideo,
+  upload.single('video'),
   async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: "No video uploaded" });
 
-      // Upload video to Cloudinary using Stream
-      const uploadPromise = () =>
-        new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            {
-              resource_type: "video",
-              folder: "course_videos",
-            },
-            (err, result) => {
-              if (err) reject(err);
-              else resolve(result);
-            }
-          );
-          stream.end(req.file.buffer);
-        });
-
-      const result = await uploadPromise();
-
+      // File is already uploaded to Cloudinary by the middleware
       res.json({
         message: "Video uploaded",
-        video_url: result.secure_url,
-        public_id: result.public_id,
+        video_url: req.file.path, // CloudinaryStorage uses 'path' for the URL
+        public_id: req.file.filename, // CloudinaryStorage uses 'filename' for public_id
       });
 
     } catch (err) {

@@ -8,7 +8,8 @@ const isAdminRequest = (req) => Boolean(req.user?.isAdmin);
 // Create course (admin)
 exports.createCourse = async (req, res, next) => {
   try {
-    const thumbnail = req.file?.path || req.body.thumbnail_url || null;
+    const thumbnailFile = req.files?.['thumbnail']?.[0];
+    const thumbnail = thumbnailFile?.path || req.body.thumbnail_url || null;
     const payload = { ...req.body };
 
     if (payload.price_usd !== undefined) payload.price_usd = Number(payload.price_usd);
@@ -16,13 +17,13 @@ exports.createCourse = async (req, res, next) => {
 
     // Parse JSON string of videos from frontend if sent
     let videos = [];
-    if (req.body.videos) {
-      videos = JSON.parse(req.body.videos); // [{title,url}]
+    if (req.body.video_data) {
+      videos = JSON.parse(req.body.video_data); // [{title,url}]
     }
 
     // Include uploaded video files
-    if (req.files && req.files.length) {
-      const uploadedVideos = req.files.map(file => ({
+    if (req.files?.['videos']?.length) {
+      const uploadedVideos = req.files['videos'].map(file => ({
         title: file.originalname,
         video_url: file.path
       }));
@@ -49,7 +50,8 @@ exports.updateCourse = async (req, res, next) => {
     const course = await Course.findById(req.params.id);
     if (!course) return res.status(404).json({ message: 'Course not found' });
 
-    const thumbnail = req.file?.path;
+    const thumbnailFile = req.files?.['thumbnail']?.[0];
+    const thumbnail = thumbnailFile?.path;
     const payload = { ...req.body };
     if (payload.price_usd !== undefined) payload.price_usd = Number(payload.price_usd);
     if (!payload.slug && payload.title) payload.slug = slugify(payload.title, { lower: true, strict: true });
@@ -61,9 +63,9 @@ exports.updateCourse = async (req, res, next) => {
 
     // Merge uploaded videos
     let videos = course.videos || [];
-    if (req.body.videos) videos = [...videos, ...JSON.parse(req.body.videos)];
-    if (req.files && req.files.length) {
-      const uploadedVideos = req.files.map(file => ({
+    if (req.body.video_data) videos = [...videos, ...JSON.parse(req.body.video_data)];
+    if (req.files?.['videos']?.length) {
+      const uploadedVideos = req.files['videos'].map(file => ({
         title: file.originalname,
         video_url: file.path
       }));

@@ -5,23 +5,31 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
   const [courseMenuOpen, setCourseMenuOpen] = useState(false);
+  const [onlineCourseMenuOpen, setOnlineCourseMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const courseCategories = [
-    "Fellowship Programs",
-    "Mastery Programs",
-    "Exam Courses",
-    "Student Courses",
-    "Short Courses",
-    "Online Programs"
+    { name: "Fellowship Programs", path: "/courses/fellowship" },
+    { name: "Mastery Programs", path: "/courses/mastery" },
+    { name: "Exam Courses", path: "/courses/exam" }, // Placeholder
+    { name: "Student Courses", path: "/courses/student" }, // Placeholder
+    { name: "Short Courses", path: "/courses/short-courses" }, // Placeholder
+  ];
+
+  const onlineCourseCategories = [
+    { name: "Online Fixed Orthodontics Course", path: "/courses/online/fixed-orthodontics" },
+    { name: "Dental Implant Course - Online", path: "/courses/online/dental-implant" },
+    { name: "Online Crown and Bridge Course", path: "/courses/online/crown-and-bridge" },
+    { name: "Online-Endodontics Course", path: "/courses/online/endodontics" },
+    { name: "Online-Periodontics Course", path: "/courses/online/periodontics" },
+    { name: "Online Cosmetic Dentistry Course", path: "/courses/online/cosmetic-dentistry" },
   ];
 
   const navItems = [
-    // { to: "/courses", label: "Courses" }, // Replaced by dropdown
     { to: "/about", label: "About" },
-    { to: "/contact", label: "Contact" },
+    { to: "/contact", label: "Contact Us" },
   ];
 
   return (
@@ -55,7 +63,7 @@ export default function Navbar() {
             >
               <button
                 className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-cyan-700 transition"
-                onClick={() => navigate('/courses')}
+              // onClick={() => navigate('/courses')} // No main link for this dropdown anymore
               >
                 Courses
                 <ChevronDown className="h-4 w-4" />
@@ -66,20 +74,44 @@ export default function Navbar() {
                   <div className="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
                     {courseCategories.map((cat) => (
                       <Link
-                        key={cat}
-                        to={`/courses?category=${encodeURIComponent(cat)}`}
+                        key={cat.name}
+                        to={cat.path}
                         className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-cyan-700"
                       >
-                        {cat}
+                        {cat.name}
                       </Link>
                     ))}
-                    <div className="border-t border-slate-100 my-1"></div>
-                    <Link
-                      to="/courses"
-                      className="block px-4 py-2 text-sm font-semibold text-cyan-600 hover:bg-slate-50"
-                    >
-                      View All Courses
-                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Online Courses Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setOnlineCourseMenuOpen(true)}
+              onMouseLeave={() => setOnlineCourseMenuOpen(false)}
+            >
+              <button
+                className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-cyan-700 transition"
+                onClick={() => navigate('/online-courses')}
+              >
+                Online Courses
+                <ChevronDown className="h-4 w-4" />
+              </button>
+
+              {onlineCourseMenuOpen && (
+                <div className="absolute top-full left-0 w-64 pt-2">
+                  <div className="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden py-2">
+                    {onlineCourseCategories.map((cat) => (
+                      <Link
+                        key={cat.name}
+                        to={cat.path}
+                        className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-cyan-700"
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}
@@ -146,12 +178,12 @@ export default function Navbar() {
               <p className="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Courses</p>
               {courseCategories.map((cat) => (
                 <Link
-                  key={cat}
-                  to={`/courses?category=${encodeURIComponent(cat)}`}
+                  key={cat.name}
+                  to={cat.path}
                   onClick={() => setOpen(false)}
                   className="block rounded-2xl px-4 py-2 text-base font-medium text-slate-600 hover:bg-slate-50"
                 >
-                  {cat}
+                  {cat.name}
                 </Link>
               ))}
             </div>
