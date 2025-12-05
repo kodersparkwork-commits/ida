@@ -45,11 +45,11 @@ export default function Navbar() {
               <GraduationCap className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-lg font-semibold text-slate-900">
                 Indian Dental Academy
               </p>
-              <p className="text-lg font-semibold text-slate-900">
-                Precision Learning
+              <p className="text-xs text-slate-500">
+                Established in 2005
               </p>
             </div>
           </button>

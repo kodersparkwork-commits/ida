@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function RestorativeDentistryPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <div className="min-h-screen bg-white py-20">
@@ -117,12 +119,21 @@ export default function RestorativeDentistryPage() {
                 </div>
 
                 <div className="mt-10">
-                    <button
-                        onClick={() => navigate('/contact')}
-                        className="btn-brand w-full"
-                    >
-                        Enquire Now
-                    </button>
+                    {user ? (
+                        <button
+                            onClick={() => navigate('/contact')}
+                            className="btn-brand w-full"
+                        >
+                            Buy Now
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => navigate('/auth')}
+                            className="btn-brand w-full"
+                        >
+                            Sign In
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

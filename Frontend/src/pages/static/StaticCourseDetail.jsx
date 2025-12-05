@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function StaticCourseDetail({ title, description, topics = [] }) {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <div className="min-h-screen bg-white py-20">
@@ -35,9 +37,21 @@ export default function StaticCourseDetail({ title, description, topics = [] }) 
                 </div>
 
                 <div className="mt-10">
-                    <button className="btn-brand">
-                        Enquire Now
-                    </button>
+                    {user ? (
+                        <button
+                            onClick={() => navigate('/contact')}
+                            className="btn-brand"
+                        >
+                            Buy Now
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => navigate('/auth')}
+                            className="btn-brand"
+                        >
+                            Sign In
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

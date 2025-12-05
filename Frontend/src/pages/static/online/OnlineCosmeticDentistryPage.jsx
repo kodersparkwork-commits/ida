@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function OnlineCosmeticDentistryPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <div className="min-h-screen bg-white py-20">
@@ -53,12 +55,21 @@ export default function OnlineCosmeticDentistryPage() {
                         <div className="bg-cyan-50 p-6 rounded-xl border border-cyan-100 text-center">
                             <p className="text-lg font-semibold text-cyan-900 mb-2">Get Started Today</p>
                             <p className="text-cyan-700 mb-4">12 months unlimited access @ $500 USD.</p>
-                            <button
-                                onClick={() => navigate('/contact')}
-                                className="btn-brand w-full"
-                            >
-                                Enquire Now
-                            </button>
+                            {user ? (
+                                <button
+                                    onClick={() => navigate('/payment/online-cosmetic-dentistry')}
+                                    className="btn-brand w-full"
+                                >
+                                    Buy Now
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => navigate('/auth')}
+                                    className="btn-brand w-full"
+                                >
+                                    Sign In
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

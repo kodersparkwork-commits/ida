@@ -23,6 +23,8 @@ app.use('/api/admin', adminRoutes);        // admin register/login + admin cours
 app.use('/api/auth', userRoutes);          // user register/login/profile
 app.use('/api/courses', courseRoutes);     // public course listing/details
 app.use('/api/enrollments', enrollmentRoutes); // purchase & user enrollments
+const paymentRoutes = require('./routes/paymentRoutes');
+app.use('/api/payment', paymentRoutes);
 
 // Error handler
 const { errorHandler } = require('./middleware/errorMiddleware');

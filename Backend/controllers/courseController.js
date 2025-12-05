@@ -145,3 +145,16 @@ exports.addVideo = async (req, res, next) => {
   }
 };
 
+exports.getCourseBySlug = async (req, res, next) => {
+  try {
+    const allowInactive = isAdminRequest(req);
+    const course = await Course.findOne({
+      slug: req.params.slug,
+      ...(allowInactive ? {} : { is_active: true }),
+    });
+    if (!course) return res.status(404).json({ message: 'Course not found' });
+    res.json({ course });
+  } catch (err) {
+    next(err);
+  }
+};

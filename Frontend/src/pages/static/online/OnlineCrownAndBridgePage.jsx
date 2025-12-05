@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function OnlineCrownAndBridgePage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <div className="min-h-screen bg-white py-20">
@@ -51,15 +53,37 @@ export default function OnlineCrownAndBridgePage() {
 
                     {/* Right Column: Enquire */}
                     <div className="space-y-6">
+                        <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg bg-black">
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/nDhNoo2mIDM"
+                                title="Crown and Bridge Demo"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                        <p className="text-sm text-center text-slate-500">Demo Video: Crown and Bridge Course</p>
+
                         <div className="bg-cyan-50 p-6 rounded-xl border border-cyan-100 text-center">
                             <p className="text-lg font-semibold text-cyan-900 mb-2">Get Started Today</p>
                             <p className="text-cyan-700 mb-4">12 months unlimited access @ $500 USD.</p>
-                            <button
-                                onClick={() => navigate('/contact')}
-                                className="btn-brand w-full"
-                            >
-                                Enquire Now
-                            </button>
+                            {user ? (
+                                <button
+                                    onClick={() => navigate('/payment/online-crown-and-bridge')}
+                                    className="btn-brand w-full"
+                                >
+                                    Buy Now
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => navigate('/auth')}
+                                    className="btn-brand w-full"
+                                >
+                                    Sign In
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
