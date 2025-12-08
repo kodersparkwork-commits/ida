@@ -86,7 +86,7 @@ export default function DentalLabTechnologyPage() {
 
                             <div>
                                 <h4 className="text-lg font-semibold text-slate-900">IV - CAD CAM</h4>
-                                <p className="text-sm text-slate-500 mb-2">Duration: 15 days | Training cost: 50,000 INR</p>
+                                <p className="text-sm text-slate-500 mb-2">Duration: 15 days</p>
                                 <ul className="list-disc pl-5">
                                     <li>CAD CAM</li>
                                     <li>Scan and milling</li>

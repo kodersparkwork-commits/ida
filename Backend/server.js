@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-    'http://localhost:5173',
+    'https://www.indiandentalacademy.com',
     'http://localhost:5000',
     'https://ida-seven.vercel.app',
     'https://ida-seven.vercel.app/'
