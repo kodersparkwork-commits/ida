@@ -1,5 +1,6 @@
 // controllers/authController.js
 const User = require("../models/User");
+const Enrollment = require("../models/Enrollment");
 const generateToken = require("../utils/generateToken");
 const {
   registerSchema,
@@ -15,7 +16,18 @@ const formatUserResponse = (user) => ({
   role: user.role,
   createdAt: user.createdAt,
   updatedAt: user.updatedAt,
+  enrolledCourses: user.enrolledCourses || [],
 });
+
+const getEnrolledCourses = async (userId) => {
+  try {
+    const enrollments = await Enrollment.find({ user_id: userId }).populate('course_id');
+    return enrollments.filter(e => e.course_id).map(e => e.course_id.slug);
+  } catch (err) {
+    console.error("Error fetching enrollments:", err);
+    return [];
+  }
+};
 
 exports.registerUser = async (req, res, next) => {
   try {
@@ -32,8 +44,9 @@ exports.registerUser = async (req, res, next) => {
     const user = new User(parsed);
     await user.save();
 
+    // New user has no enrollments
     res.status(201).json({
-      user: formatUserResponse(user),
+      user: formatUserResponse({ ...user.toObject(), enrolledCourses: [] }),
       token: generateToken(user),
     });
   } catch (err) {
@@ -51,8 +64,33 @@ exports.loginUser = async (req, res, next) => {
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
 
+    const enrolledCourses = await getEnrolledCourses(user._id);
     res.json({
-      user: formatUserResponse(user),
+      user: formatUserResponse({ ...user.toObject(), enrolledCourses }),
+      token: generateToken(user),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.loginAdmin = async (req, res, next) => {
+  try {
+    const parsed = loginSchema.parse(req.body);
+    const user = await User.findOne({ email: parsed.email });
+    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+
+    const isMatch = await user.matchPassword(parsed.password);
+    if (!isMatch)
+      return res.status(401).json({ message: "Invalid credentials" });
+
+    if (!user.isAdmin) {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const enrolledCourses = await getEnrolledCourses(user._id);
+    res.json({
+      user: formatUserResponse({ ...user.toObject(), enrolledCourses }),
       token: generateToken(user),
     });
   } catch (err) {
@@ -63,7 +101,8 @@ exports.loginUser = async (req, res, next) => {
 exports.getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
-    res.json({ user: formatUserResponse(user) });
+    const enrolledCourses = await getEnrolledCourses(user._id);
+    res.json({ user: formatUserResponse({ ...user.toObject(), enrolledCourses }) });
   } catch (err) {
     next(err);
   }
@@ -93,7 +132,8 @@ exports.updateProfile = async (req, res, next) => {
     if (parsed.password) user.password = parsed.password;
 
     await user.save();
-    res.json({ user: formatUserResponse(user) });
+    const enrolledCourses = await getEnrolledCourses(user._id);
+    res.json({ user: formatUserResponse({ ...user.toObject(), enrolledCourses }) });
   } catch (err) {
     next(err);
   }

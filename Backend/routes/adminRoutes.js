@@ -44,7 +44,7 @@ router.post("/register", async (req, res, next) => {
 // =========================
 // ADMIN LOGIN
 // =========================
-router.post("/login", authController.loginUser);
+router.post("/login", authController.loginAdmin);
 
 // =========================
 // COURSE IMAGE UPLOAD

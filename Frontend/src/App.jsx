@@ -53,6 +53,7 @@ import OnlineEndodonticsPage from './pages/static/online/OnlineEndodonticsPage';
 import OnlinePeriodonticsPage from './pages/static/online/OnlinePeriodonticsPage';
 import ShortCoursesPage from './pages/static/ShortCoursesPage';
 import OnlineCosmeticDentistryPage from './pages/static/online/OnlineCosmeticDentistryPage';
+import OnlineCoursesOverviewPage from './pages/static/OnlineCoursesOverviewPage';
 
 // admin pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -75,8 +76,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
 
-            {/* Online Courses (Dynamic) */}
-            <Route path="/online-courses" element={<CoursesPage />} />
+            {/* Online Courses (Static Overview) */}
+            <Route path="/online-courses" element={<OnlineCoursesOverviewPage />} />
             <Route path="/courses/:id" element={<CourseDetailPage />} />
             <Route path="/payment/:courseId" element={<PaymentPage />} />
 

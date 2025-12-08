@@ -36,6 +36,15 @@ export default function LMSPage() {
     return () => { isMounted = false; };
   }, [user, navigate]);
 
+  const COURSE_SLUG_MAP = {
+    'online-fixed-orthodontics': '/courses/online/fixed-orthodontics',
+    'online-periodontics': '/courses/online/periodontics',
+    'online-endodontics': '/courses/online/endodontics',
+    'online-dental-implant': '/courses/online/dental-implant',
+    'online-crown-and-bridge': '/courses/online/crown-and-bridge',
+    'online-cosmetic-dentistry': '/courses/online/cosmetic-dentistry',
+  };
+
   if (loading) return <div className="py-20 text-center">Loading...</div>;
 
   if (!enrollments.length) {
@@ -49,7 +58,7 @@ export default function LMSPage() {
           <p className="text-slate-600">
             Your enrolled programs will appear here as soon as you confirm your seat. Explore our catalog to get started.
           </p>
-          <button onClick={() => navigate('/courses')} className="btn-brand">
+          <button onClick={() => navigate('/online-courses')} className="btn-brand">
             Discover Courses
           </button>
         </div>
@@ -76,10 +85,11 @@ export default function LMSPage() {
           {enrollments.map((enrollment) => {
             const course = enrollment.course;
             const courseId = course?._id || enrollment.course_id;
+            const targetPath = COURSE_SLUG_MAP[course?.slug] || `/courses/${courseId}`;
 
             return (
               <div key={enrollment._id || enrollment.id} className="card-glass p-6 flex flex-col gap-4 border border-white/70">
-                
+
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
@@ -117,7 +127,7 @@ export default function LMSPage() {
                     </p>
                   </div>
                   <button
-                    onClick={() => navigate(`/courses/${courseId}`)}
+                    onClick={() => navigate(targetPath)}
                     className="btn-brand px-5 py-2 text-sm disabled:opacity-60"
                     disabled={!courseId}
                   >

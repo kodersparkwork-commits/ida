@@ -43,7 +43,7 @@ exports.getUserEnrollments = async (req, res, next) => {
       .populate({
         path: 'course_id',
         match: { is_active: true },
-        select: 'title short_description description price_usd thumbnail_url videos', // include videos
+        select: 'title short_description description price_usd thumbnail_url videos slug', // include videos and slug
       });
 
     const normalized = enrollments
@@ -58,6 +58,19 @@ exports.getUserEnrollments = async (req, res, next) => {
       }));
 
     res.json({ enrollments: normalized });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllEnrollments = async (req, res, next) => {
+  try {
+    const enrollments = await Enrollment.find()
+      .populate('user_id', 'fullName email')
+      .populate('course_id', 'title price_usd')
+      .sort({ enrolled_at: -1 });
+
+    res.json({ enrollments });
   } catch (err) {
     next(err);
   }
