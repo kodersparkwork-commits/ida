@@ -7,56 +7,98 @@ export default function OnlineDentalImplantPage() {
     const { user } = useAuth();
 
     return (
-        <div className="min-h-screen bg-white py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <button
-                    onClick={() => navigate(-1)}
-                    className="text-cyan-600 hover:text-cyan-700 font-medium mb-6"
-                >
-                    ← Back
-                </button>
+        <div className="min-h-screen bg-white">
+            {/* Header Section */}
+            <div className="bg-slate-50 border-b border-slate-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="text-cyan-600 hover:text-cyan-700 font-medium mb-4"
+                    >
+                        ← Back
+                    </button>
+                    <h1 className="text-4xl font-bold text-slate-900 mb-2">Dental Implant Course - Online</h1>
+                    <p className="text-lg text-slate-500 mb-4">A multi system Implantology training program</p>
+                    {!user?.enrolledCourses?.includes('online-dental-implant') && (
+                        <p className="text-xl text-slate-600">Course Fee: <span className="font-semibold text-slate-900">$500 USD</span> – 12 Months unlimited access</p>
+                    )}
+                </div>
+            </div>
 
-                <h1 className="text-4xl font-bold text-slate-900 mb-2">Dental Implant Course - Online</h1>
-                <p className="text-lg text-slate-500 mb-4">A multi system Implantology training program</p>
-                {!user?.enrolledCourses?.includes('online-dental-implant') && (
-                    <p className="text-xl text-slate-600 mb-8">Course Fee: <span className="font-semibold text-slate-900">$500 USD</span> – 12 Months unlimited access</p>
-                )}
+            {/* Theater Mode Video Section */}
+            <div className="bg-slate-900 py-12 shadow-inner">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="aspect-video w-full rounded-xl overflow-hidden shadow-2xl bg-black relative group ring-1 ring-white/10">
+                        {user && user.enrolledCourses && user.enrolledCourses.includes('online-dental-implant') ? (
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/cdPTyb5tgTU"
+                                title="Dental Implant Demo"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{ position: 'absolute', top: 0, left: 0 }}
+                            ></iframe>
+                        ) : (
+                            <div className="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-6 text-center z-10 backdrop-blur-sm">
+                                <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mb-6 backdrop-blur-md shadow-lg border border-white/20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-3">Premium Content Locked</h3>
+                                <p className="text-slate-300 mb-8 max-w-md text-lg">Purchase this course to access the full video lectures and study details.</p>
+                                <button
+                                    onClick={() => navigate('/payment/online-dental-implant')}
+                                    className="bg-cyan-500 hover:bg-cyan-400 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all shadow-lg hover:shadow-cyan-500/25"
+                                >
+                                    Enroll Now to Unlock
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                    <p className="text-center text-slate-400 mt-4 text-sm font-medium tracking-wide uppercase">Demo Video: Dental Implant Course</p>
+                </div>
+            </div>
 
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                     {/* Left Column: Content */}
-                    <div className="lg:col-span-2 space-y-8">
+                    <div className="lg:col-span-2 space-y-12">
                         <section>
-                            <h3 className="text-xl font-semibold text-cyan-700 mb-4">Course Overview</h3>
-                            <p className="text-slate-700 mb-4">
+                            <h3 className="text-2xl font-bold text-slate-900 mb-6 border-b border-slate-200 pb-2">Course Overview</h3>
+                            <p className="text-slate-700 mb-6 text-lg">
                                 <strong>Duration:</strong> 1 year online
                             </p>
-                            <h3 className="text-xl font-semibold text-cyan-700 mb-4">Training Covers</h3>
-                            <ul className="list-disc pl-5 space-y-2 text-slate-700">
+                            <h3 className="text-xl font-bold text-slate-900 mb-4">Training Covers</h3>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 list-disc pl-5 text-slate-700">
                                 <li>Introduction to Implant Dentistry</li>
                                 <li>History of Implant Dentistry</li>
                                 <li>Material science of Dental Implants</li>
                                 <li>Various designs of Dental Implants</li>
-                                <li>Basic bone anatomy and physiology (Maxilla and Mandible)</li>
+                                <li>Basic bone anatomy and physiology</li>
                                 <li>Concepts of Integration</li>
-                                <li>Case selection and planning for implant surgery</li>
+                                <li>Case selection and planning</li>
                                 <li>Armamentarium for implant surgery</li>
-                                <li>Prosthetic planning for different edentulous situations (partial and complete)</li>
-                                <li>Investigation to evaluate a implant case</li>
-                                <li>Surgical principles for implant Dentistry</li>
-                                <li>Demonstration of various Armamentarium for implant dentistry</li>
-                                <li>Step by step drill sequence for implant placement</li>
-                                <li>Cover screw, healing abutment, implant abutment placement</li>
-                                <li>Impression analog, implant analog, various impression procedures</li>
-                                <li>Radiographs and CBCT reading exercises</li>
-                                <li>Complete laboratory steps demonstration</li>
-                                <li>Case Selection, preparation of a case for implant surgery</li>
-                                <li>Selection of proper Diameter and length of the implant for selected case</li>
-                                <li>Surgical placement of implant live (step by step demonstration)</li>
-                                <li>Hands on surgical placement by the participant</li>
-                                <li>Post operative care of implant case</li>
+                                <li>Prosthetic planning</li>
+                                <li>Investigation to evaluate case</li>
+                                <li>Surgical principles</li>
+                                <li>Demonstration of Armamentarium</li>
+                                <li>Step by step drill sequence</li>
+                                <li>Cover screw, healing abutment placement</li>
+                                <li>Impression procedures</li>
+                                <li>Radiographs and CBCT reading</li>
+                                <li>Laboratory steps demonstration</li>
+                                <li>Case Selection & preparation</li>
+                                <li>Selection of Implant Diameter/Length</li>
+                                <li>Surgical placement live demo</li>
+                                <li>Hands on surgical placement</li>
+                                <li>Post operative care</li>
                                 <li>Second stage surgery</li>
                                 <li>Healing abutment placement</li>
-                                <li>Implant impression procedure step by step demonstration</li>
+                                <li>Implant impression procedure</li>
                                 <li>Cementation procedures</li>
                                 <li>Implant Occlusion</li>
                                 <li>Follow up of Implant Case</li>
@@ -64,71 +106,48 @@ export default function OnlineDentalImplantPage() {
                             </ul>
                         </section>
 
-                        <section className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                            <h3 className="text-lg font-semibold text-slate-900 mb-2">Additional Highlights</h3>
-                            <ul className="list-circle pl-5 space-y-1 text-slate-700">
+                        <section className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                            <h3 className="text-xl font-bold text-slate-900 mb-4">Additional Highlights</h3>
+                            <ul className="list-circle pl-5 space-y-2 text-slate-700 mb-6">
                                 <li>Participant home task Presentations</li>
                                 <li>Live demo prosthesis delivery</li>
                                 <li>Participant Clinics - Impression making & Prosthesis delivery</li>
                                 <li>Implant Aesthetics</li>
                             </ul>
-                            <p className="mt-4 text-slate-600">
+                            <p className="text-slate-600 mb-2">
                                 Post training support shall be given to participants via online for next six months for you to accommodate Implant dentistry into your practice.
                             </p>
                         </section>
                     </div>
 
-                    {/* Right Column: Enquire */}
-                    <div className="space-y-6">
-                        {/* Video Section with Access Control */}
-                        <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg bg-black relative group">
-                            {user && user.enrolledCourses && user.enrolledCourses.includes('online-dental-implant') ? (
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src="https://www.youtube.com/embed/cdPTyb5tgTU"
-                                    title="Dental Implant Demo"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                            ) : (
-                                <div className="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-6 text-center z-10">
-                                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Premium Content Locked</h3>
-                                    <p className="text-slate-300 mb-6 max-w-sm">Purchase this course to access the full video lectures and study details.</p>
-                                    <button
-                                        onClick={() => navigate('/payment/online-dental-implant')}
-                                        className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-                                    >
-                                        Enroll Now to Unlock
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                        <p className="text-sm text-center text-slate-500">Demo Video: Dental Implant Course</p>
-
+                    {/* Right Column: CTA */}
+                    <div className="space-y-8">
                         {!user?.enrolledCourses?.includes('online-dental-implant') && (
-                            <div className="bg-cyan-50 p-6 rounded-xl border border-cyan-100 text-center">
-                                <p className="text-lg font-semibold text-cyan-900 mb-2">Get Started Today</p>
-                                <p className="text-cyan-700 mb-4">12 months unlimited access @ $500 USD.</p>
+                            <div className="bg-white p-6 rounded-2xl border border-cyan-100 shadow-xl shadow-cyan-900/5 sticky top-24">
+                                <div className="text-center mb-6">
+                                    <span className="inline-block px-4 py-1.5 bg-cyan-50 text-cyan-700 text-sm font-semibold rounded-full mb-3">Limited Access</span>
+                                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Get Started Today</h3>
+                                    <p className="text-slate-500">12 months unlimited access</p>
+                                </div>
+
+                                <div className="text-center mb-8">
+                                    <span className="text-4xl font-bold text-cyan-600">$500</span>
+                                    <span className="text-slate-400 text-sm ml-2">USD</span>
+                                </div>
+
                                 {user ? (
                                     <button
                                         onClick={() => navigate('/payment/online-dental-implant')}
-                                        className="btn-brand w-full"
+                                        className="btn-brand w-full py-4 text-lg shadow-lg hover:shadow-cyan-500/25"
                                     >
-                                        Buy Now
+                                        Enroll Now
                                     </button>
                                 ) : (
                                     <button
                                         onClick={() => navigate('/auth')}
-                                        className="btn-brand w-full"
+                                        className="btn-brand w-full py-4 text-lg shadow-lg hover:shadow-cyan-500/25"
                                     >
-                                        Sign In
+                                        Sign In to Enroll
                                     </button>
                                 )}
                             </div>

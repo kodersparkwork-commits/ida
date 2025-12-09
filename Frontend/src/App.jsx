@@ -59,6 +59,7 @@ import OnlineCoursesOverviewPage from './pages/static/OnlineCoursesOverviewPage'
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminCourseForm from './pages/admin/AdminCourseForm';
+import AdminVideoLibrary from './pages/admin/AdminVideoLibrary';
 
 function App() {
   useEffect(() => {
@@ -130,6 +131,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/course/new" element={<AdminCourseForm />} />
             <Route path="/admin/course/:id/edit" element={<AdminCourseForm />} />
+            <Route path="/admin/video-library" element={<AdminVideoLibrary />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

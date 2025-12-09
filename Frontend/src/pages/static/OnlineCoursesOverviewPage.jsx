@@ -32,6 +32,20 @@ export default function OnlineCoursesOverviewPage() {
         }
     ];
 
+    // Video Folders Logic
+    const [videoFolders, setVideoFolders] = React.useState([]);
+    const [selectedFolder, setSelectedFolder] = React.useState(null);
+
+    React.useEffect(() => {
+        import('../../api').then(module => {
+            const API = module.default;
+            API.get('/api/video-folders')
+                .then(res => setVideoFolders(res.data))
+                .catch(err => console.error("Failed to load video folders", err));
+        });
+    }, []);
+
+    // Payment Section
     const fees = [
         { name: "Fixed orthodontics", price: "500 USD" },
         { name: "Dental implants course", price: "500 USD" },
@@ -43,7 +57,7 @@ export default function OnlineCoursesOverviewPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-white py-20">
+        <div className="min-h-screen bg-white py-20 relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl font-bold text-slate-900 mb-6 uppercase tracking-wide">Online Courses</h1>
@@ -116,6 +130,75 @@ export default function OnlineCoursesOverviewPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Comprehensive Video Library Section */}
+                <div className="mb-16">
+                    <h2 className="text-3xl font-bold text-center text-slate-900 mb-8 uppercase tracking-wide">
+                        Online courses with our comprehensive video library
+                    </h2>
+
+                    {videoFolders.length === 0 ? (
+                        <p className="text-center text-slate-500">Video library is currently being updated.</p>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {videoFolders.map(folder => (
+                                <div
+                                    key={folder._id}
+                                    onClick={() => setSelectedFolder(folder)}
+                                    className="bg-white p-6 rounded-xl border border-slate-200 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/10 cursor-pointer transition-all group text-center"
+                                >
+                                    <div className="w-16 h-16 bg-cyan-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-cyan-500 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-cyan-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="font-bold text-slate-800 text-lg mb-1 group-hover:text-cyan-700 transition-colors">{folder.name}</h3>
+                                    <p className="text-sm text-slate-500">{folder.videos?.length || 0} Videos</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Video Modal */}
+                {selectedFolder && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedFolder(null)}>
+                        <div className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                            <div className="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                                <h3 className="text-2xl font-bold text-slate-900">{selectedFolder.name} - Video Library</h3>
+                                <button onClick={() => setSelectedFolder(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-6 bg-slate-100">
+                                {selectedFolder.videos?.length === 0 ? (
+                                    <div className="text-center py-20 text-slate-500">
+                                        <p>No videos available in this folder yet.</p>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        {selectedFolder.videos.map(video => (
+                                            <div key={video._id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                                                <div className="aspect-video bg-black relative">
+                                                    <div
+                                                        className="absolute inset-0 w-full h-full [&>iframe]:w-full [&>iframe]:h-full"
+                                                        dangerouslySetInnerHTML={{ __html: video.embedTag }}
+                                                    />
+                                                </div>
+                                                <div className="p-4">
+                                                    <h4 className="font-bold text-slate-800 text-lg leading-tight">{video.title}</h4>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <div className="bg-slate-900 text-white p-8 md:p-12 rounded-2xl text-center space-y-6">
                     <p className="text-lg md:text-xl text-slate-300">
