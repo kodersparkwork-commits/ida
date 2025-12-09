@@ -5,17 +5,29 @@ import API from '../../api';
 export default function AdminVideoLibrary() {
     const navigate = useNavigate();
     const [folders, setFolders] = useState([]);
+    const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedFolder, setSelectedFolder] = useState(null);
 
     // Form states
     const [newFolderName, setNewFolderName] = useState('');
+    const [selectedCourse, setSelectedCourse] = useState('');
     const [videoTitle, setVideoTitle] = useState('');
     const [embedTag, setEmbedTag] = useState('');
 
     useEffect(() => {
         fetchFolders();
+        fetchCourses();
     }, []);
+
+    const fetchCourses = async () => {
+        try {
+            const res = await API.get('/api/courses');
+            setCourses(res.data.courses || []);
+        } catch (err) {
+            console.error("Failed to fetch courses", err);
+        }
+    };
 
     const fetchFolders = async () => {
         try {
@@ -32,8 +44,12 @@ export default function AdminVideoLibrary() {
     const handleCreateFolder = async (e) => {
         e.preventDefault();
         try {
-            await API.post('/api/video-folders', { name: newFolderName });
+            await API.post('/api/video-folders', {
+                name: newFolderName,
+                courseId: selectedCourse || null
+            });
             setNewFolderName('');
+            setSelectedCourse('');
             fetchFolders();
             alert('Folder created!');
         } catch (err) {
@@ -121,6 +137,18 @@ export default function AdminVideoLibrary() {
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none"
                                     required
                                 />
+                                <select
+                                    value={selectedCourse}
+                                    onChange={e => setSelectedCourse(e.target.value)}
+                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none bg-white"
+                                >
+                                    <option value="">-- Assign to Course (Optional) --</option>
+                                    {courses.map(course => (
+                                        <option key={course._id} value={course._id}>
+                                            {course.title}
+                                        </option>
+                                    ))}
+                                </select>
                                 <button type="submit" className="w-full btn-brand py-2">Create Folder</button>
                             </form>
                         </div>
@@ -139,7 +167,14 @@ export default function AdminVideoLibrary() {
                                         onClick={() => setSelectedFolder(folder)}
                                     >
                                         <div>
-                                            <p className={`font-semibold ${selectedFolder?._id === folder._id ? 'text-cyan-800' : 'text-slate-700'}`}>{folder.name}</p>
+                                            <p className={`font-semibold ${selectedFolder?._id === folder._id ? 'text-cyan-800' : 'text-slate-700'}`}>
+                                                {folder.name}
+                                                {folder.courseId && (
+                                                    <span className="ml-2 text-[10px] uppercase tracking-wider bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
+                                                        {folder.courseId.title}
+                                                    </span>
+                                                )}
+                                            </p>
                                             <p className="text-xs text-slate-400">{folder.videos?.length || 0} videos</p>
                                         </div>
                                         <button
@@ -166,6 +201,60 @@ export default function AdminVideoLibrary() {
                                         <span className="text-cyan-600">📂</span>
                                         Manage Videos: {selectedFolder.name}
                                     </h2>
+
+                                    {/* Edit Folder Settings */}
+                                    <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6">
+                                        <h3 className="font-semibold text-slate-700 text-sm uppercase tracking-wide mb-3">Folder Settings</h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs text-slate-500 mb-1">Folder Name</label>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={selectedFolder.name}
+                                                        onChange={e => setSelectedFolder({ ...selectedFolder, name: e.target.value })}
+                                                        className="flex-1 px-3 py-1.5 border border-slate-300 rounded text-sm focus:ring-1 focus:ring-cyan-500 outline-none"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs text-slate-500 mb-1">Assigned Course</label>
+                                                <select
+                                                    value={selectedFolder.courseId?._id || selectedFolder.courseId || ''}
+                                                    onChange={e => setSelectedFolder({ ...selectedFolder, courseId: e.target.value || null })}
+                                                    className="w-full px-3 py-1.5 border border-slate-300 rounded text-sm focus:ring-1 focus:ring-cyan-500 outline-none bg-white"
+                                                >
+                                                    <option value="">-- No Course Assigned --</option>
+                                                    {courses.map(course => (
+                                                        <option key={course._id} value={course._id}>
+                                                            {course.title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="mt-3 text-right">
+                                            <button
+                                                onClick={async () => {
+                                                    try {
+                                                        const res = await API.put(`/api/video-folders/${selectedFolder._id}`, {
+                                                            name: selectedFolder.name,
+                                                            courseId: selectedFolder.courseId
+                                                        });
+                                                        setFolders(prev => prev.map(f => f._id === res.data._id ? res.data : f));
+                                                        setSelectedFolder(res.data); // Update with populated data
+                                                        alert('Folder updated successfully!');
+                                                    } catch (err) {
+                                                        console.error(err);
+                                                        alert('Failed to update folder details');
+                                                    }
+                                                }}
+                                                className="px-4 py-1.5 bg-cyan-600 text-white text-xs font-bold rounded hover:bg-cyan-700 transition-colors"
+                                            >
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
 
                                     {/* Add Video Form */}
                                     <form onSubmit={handleAddVideo} className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-8 space-y-4">

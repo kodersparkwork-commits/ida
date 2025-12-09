@@ -25,6 +25,11 @@ const videoFolderSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
+        required: false
     }
 }, { timestamps: true });
 

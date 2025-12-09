@@ -7,7 +7,7 @@ const VideoFolder = require('../models/VideoFolder');
 // @access  Public
 router.get('/', async (req, res) => {
     try {
-        const folders = await VideoFolder.find().sort({ createdAt: -1 });
+        const folders = await VideoFolder.find().populate('courseId', 'title slug').sort({ createdAt: -1 });
         res.json(folders);
     } catch (err) {
         console.error(err);
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 // or we can add a middleware check here. For now keeping it simple as per request.
 router.post('/', async (req, res) => {
     try {
-        const { name } = req.body;
+        const { name, courseId } = req.body;
         if (!name) return res.status(400).json({ message: 'Folder name is required' });
 
         // Check if exists
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ message: 'Folder already exists' });
         }
 
-        const newFolder = new VideoFolder({ name });
+        const newFolder = new VideoFolder({ name, courseId });
         await newFolder.save();
         res.json(newFolder);
     } catch (err) {
@@ -50,6 +50,30 @@ router.delete('/:id', async (req, res) => {
 
         await folder.deleteOne();
         res.json({ message: 'Folder removed' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   PUT /api/video-folders/:id
+// @desc    Update a folder (name, courseId)
+// @access  Admin
+router.put('/:id', async (req, res) => {
+    try {
+        const { name, courseId } = req.body;
+        const folder = await VideoFolder.findById(req.params.id);
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+
+        if (name) folder.name = name;
+        // Allow setting courseId to null/undefined to unassign, or a new ID
+        if (courseId !== undefined) folder.courseId = courseId || null;
+
+        await folder.save();
+        // Populate courseId before returning so frontend has updated data
+        await folder.populate('courseId', 'title');
+
+        res.json(folder);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server Error' });
