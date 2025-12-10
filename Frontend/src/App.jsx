@@ -22,6 +22,7 @@ import FellowshipPage from './pages/static/FellowshipPage';
 import MasteryPage from './pages/static/MasteryPage';
 import ExamCoursesPage from './pages/static/ExamCoursesPage';
 import StudentCoursesPage from './pages/static/StudentCoursesPage';
+import StudentCourseDetailPage from './pages/StudentCourseDetailPage';
 import StaticCourseDetail from './pages/static/StaticCourseDetail';
 
 // fellowship pages
@@ -87,6 +88,7 @@ function App() {
             <Route path="/courses/mastery" element={<MasteryPage />} />
             <Route path="/courses/exam" element={<ExamCoursesPage />} />
             <Route path="/courses/student" element={<StudentCoursesPage />} />
+            <Route path="/courses/student/:courseId" element={<StudentCourseDetailPage />} />
 
             {/* Static Course Details */}
             <Route path="/courses/fellowship/fixed-orthodontics" element={<FixedOrthodonticsPage />} />

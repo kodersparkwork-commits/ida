@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, GraduationCap, User, ChevronDown } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import logo from "../assets/logo.jpg";
 
 export default function Navbar() {
   const [courseMenuOpen, setCourseMenuOpen] = useState(false);
   const [onlineCourseMenuOpen, setOnlineCourseMenuOpen] = useState(false);
+  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
+  const [mobileOnlineCoursesOpen, setMobileOnlineCoursesOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -14,7 +17,6 @@ export default function Navbar() {
     { name: "Fellowship Programs", path: "/courses/fellowship" },
     { name: "Mastery Programs", path: "/courses/mastery" },
     { name: "Exam Courses", path: "/courses/exam" }, // Placeholder
-    { name: "Student Courses", path: "/courses/student" }, // Placeholder
     { name: "Short Courses", path: "/courses/short-courses" }, // Placeholder
   ];
 
@@ -36,14 +38,13 @@ export default function Navbar() {
     <nav className="fixed top-0 z-50 w-full border-b border-white/40 bg-white/80 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+
           <button
             type="button"
             className="flex items-center gap-2 text-left"
             onClick={() => navigate("/")}
           >
-            <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-cyan-500 via-sky-500 to-emerald-500 text-white flex items-center justify-center shadow-lg">
-              <GraduationCap className="h-5 w-5" />
-            </div>
+            <img src={logo} alt="Indian Dental Academy" className="h-12 w-12 object-contain" />
             <div>
               <p className="text-lg font-semibold text-slate-900">
                 Indian Dental Academy
@@ -117,6 +118,15 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Student Courses Link (Prominent) */}
+            <Link
+              to="/courses/student"
+              className="flex items-center gap-1 text-sm font-bold text-cyan-700 hover:text-cyan-800 transition"
+            >
+              <GraduationCap className="h-4 w-4" />
+              Student Courses
+            </Link>
+
             {navItems.map((item) => (
               <Link
                 key={item.to}
@@ -167,26 +177,77 @@ export default function Navbar() {
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
 
       {open && (
         <div className="md:hidden bg-white/90 backdrop-blur border-t border-slate-100">
           <div className="px-4 py-4 space-y-2">
             {/* Mobile Menu Items */}
             <div className="space-y-1">
-              <p className="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Courses</p>
-              {courseCategories.map((cat) => (
-                <Link
-                  key={cat.name}
-                  to={cat.path}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-2xl px-4 py-2 text-base font-medium text-slate-600 hover:bg-slate-50"
-                >
-                  {cat.name}
-                </Link>
-              ))}
+              <button
+                onClick={() => setMobileCoursesOpen(!mobileCoursesOpen)}
+                className="flex items-center justify-between w-full px-4 py-2 text-base font-medium text-slate-800 hover:bg-slate-50 rounded-2xl"
+              >
+                Courses
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${mobileCoursesOpen ? "rotate-180" : ""
+                    }`}
+                />
+              </button>
+              {mobileCoursesOpen && (
+                <div className="pl-4 space-y-1">
+                  {courseCategories.map((cat) => (
+                    <Link
+                      key={cat.name}
+                      to={cat.path}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-2xl px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
+
+            <div className="space-y-1">
+              <button
+                onClick={() => setMobileOnlineCoursesOpen(!mobileOnlineCoursesOpen)}
+                className="flex items-center justify-between w-full px-4 py-2 text-base font-medium text-slate-800 hover:bg-slate-50 rounded-2xl"
+              >
+                Online Courses
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${mobileOnlineCoursesOpen ? "rotate-180" : ""
+                    }`}
+                />
+              </button>
+              {mobileOnlineCoursesOpen && (
+                <div className="pl-4 space-y-1">
+                  {onlineCourseCategories.map((cat) => (
+                    <Link
+                      key={cat.name}
+                      to={cat.path}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-2xl px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link
+              to="/courses/student"
+              onClick={() => setOpen(false)}
+              className="block rounded-2xl px-4 py-3 text-base font-bold text-cyan-700 hover:bg-slate-50"
+            >
+              <div className="flex items-center gap-2">
+                <GraduationCap className="h-4 w-4" />
+                Student Courses
+              </div>
+            </Link>
 
             {navItems.map((item) => (
               <Link
@@ -238,7 +299,8 @@ export default function Navbar() {
             )}
           </div>
         </div>
-      )}
-    </nav>
+      )
+      }
+    </nav >
   );
 }

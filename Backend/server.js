@@ -49,6 +49,8 @@ const videoFolderRoutes = require('./routes/videoFolderRoutes');
 app.use('/api/video-folders', videoFolderRoutes);
 const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/api/payment', paymentRoutes);
+const contactRoutes = require('./routes/contactRoutes');
+app.use('/api/contact', contactRoutes);
 
 // Error handler
 const { errorHandler } = require('./middleware/errorMiddleware');
