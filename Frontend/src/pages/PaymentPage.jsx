@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API from '../api';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../components/Notification';
 
 export default function PaymentPage() {
   const { courseId } = useParams();
@@ -11,6 +12,7 @@ export default function PaymentPage() {
   const [currency, setCurrency] = useState('INR');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const notify = useNotification();
 
   useEffect(() => {
     // Load Razorpay SDK
@@ -73,14 +75,14 @@ export default function PaymentPage() {
             });
 
             if (verifyRes.data.success) {
-              alert('Payment Successful!');
+              notify.success('Payment Successful! Enrolling you now...');
               navigate('/lms');
             } else {
-              alert('Payment Verification Failed');
+              notify.error('Payment Verification Failed');
             }
           } catch (error) {
             console.error("Verification Error", error);
-            alert('Payment Verification Failed');
+            notify.error('Payment Verification Failed');
           }
         },
         prefill: {
@@ -95,14 +97,14 @@ export default function PaymentPage() {
 
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response) {
-        alert(response.error.description);
+        notify.error(response.error.description || 'Payment Failed');
         console.error(response.error);
       });
       rzp1.open();
 
     } catch (err) {
       console.error(err);
-      alert('Payment initialization failed');
+      notify.error('Payment initialization failed');
     } finally {
       setProcessing(false);
     }

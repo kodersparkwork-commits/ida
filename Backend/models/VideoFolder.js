@@ -30,6 +30,10 @@ const videoFolderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
         required: false
+    },
+    studentCourseId: {
+        type: String, // ID from studentCourses.js (e.g., 'head-neck-anatomy')
+        required: false
     }
 }, { timestamps: true });
 

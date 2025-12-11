@@ -58,11 +58,11 @@ exports.loginUser = async (req, res, next) => {
   try {
     const parsed = loginSchema.parse(req.body);
     const user = await User.findOne({ email: parsed.email });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    if (!user) return res.status(401).json({ message: "User with this email does not exist" });
 
     const isMatch = await user.matchPassword(parsed.password);
     if (!isMatch)
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Incorrect password" });
 
     const enrolledCourses = await getEnrolledCourses(user._id);
     res.json({

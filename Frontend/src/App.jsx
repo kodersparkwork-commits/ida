@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { NotificationProvider } from './components/Notification';
 import { setAdminToken } from './api';
 
 import Navbar from './components/Navbar';
@@ -71,76 +72,78 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
+    <NotificationProvider>
+      <AuthProvider>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
 
-            {/* Online Courses (Static Overview) */}
-            <Route path="/online-courses" element={<OnlineCoursesOverviewPage />} />
-            <Route path="/courses/:id" element={<CourseDetailPage />} />
-            <Route path="/payment/:courseId" element={<PaymentPage />} />
+              {/* Online Courses (Static Overview) */}
+              <Route path="/online-courses" element={<OnlineCoursesOverviewPage />} />
+              <Route path="/courses/:id" element={<CourseDetailPage />} />
+              <Route path="/payment/:courseId" element={<PaymentPage />} />
 
-            {/* Static Course Categories */}
-            <Route path="/courses/fellowship" element={<FellowshipPage />} />
-            <Route path="/courses/mastery" element={<MasteryPage />} />
-            <Route path="/courses/exam" element={<ExamCoursesPage />} />
-            <Route path="/courses/student" element={<StudentCoursesPage />} />
-            <Route path="/courses/student/:courseId" element={<StudentCourseDetailPage />} />
+              {/* Static Course Categories */}
+              <Route path="/courses/fellowship" element={<FellowshipPage />} />
+              <Route path="/courses/mastery" element={<MasteryPage />} />
+              <Route path="/courses/exam" element={<ExamCoursesPage />} />
+              <Route path="/courses/student" element={<StudentCoursesPage />} />
+              <Route path="/courses/student/:courseId" element={<StudentCourseDetailPage />} />
 
-            {/* Static Course Details */}
-            <Route path="/courses/fellowship/fixed-orthodontics" element={<FixedOrthodonticsPage />} />
-            <Route path="/courses/fellowship/general-dentistry" element={<GeneralDentistryPage />} />
-            <Route path="/courses/fellowship/restorative-dentistry" element={<RestorativeDentistryPage />} />
-            <Route path="/courses/fellowship/clinical-endodontics" element={<ClinicalEndodonticsPage />} />
-            <Route path="/courses/fellowship/dental-implantology" element={<DentalImplantologyPage />} />
-            <Route path="/courses/fellowship/cosmetic-dentistry" element={<CosmeticDentistryPage />} />
+              {/* Static Course Details */}
+              <Route path="/courses/fellowship/fixed-orthodontics" element={<FixedOrthodonticsPage />} />
+              <Route path="/courses/fellowship/general-dentistry" element={<GeneralDentistryPage />} />
+              <Route path="/courses/fellowship/restorative-dentistry" element={<RestorativeDentistryPage />} />
+              <Route path="/courses/fellowship/clinical-endodontics" element={<ClinicalEndodonticsPage />} />
+              <Route path="/courses/fellowship/dental-implantology" element={<DentalImplantologyPage />} />
+              <Route path="/courses/fellowship/cosmetic-dentistry" element={<CosmeticDentistryPage />} />
 
-            <Route path="/courses/mastery/fixed-orthodontics" element={<FixedOrthodonticsMasteryPage />} />
-            <Route path="/courses/mastery/cosmetic-dentistry" element={<CosmeticDentistryMasteryPage />} />
-            <Route path="/courses/mastery/crown-and-bridge" element={<CrownAndBridgePage />} />
-            <Route path="/courses/mastery/dental-implantology" element={<DentalImplantologyMasteryPage />} />
-            <Route path="/courses/mastery/dental-lab-technician" element={<DentalLabTechnologyPage />} />
-            <Route path="/courses/mastery/facial-aesthetics" element={<FacialAestheticsPage />} />
-            <Route path="/courses/mastery/basic-oral-surgery" element={<BasicOralSurgeryPage />} />
-            <Route path="/courses/mastery/laser-dentistry" element={<LaserDentistryPage />} />
-            <Route path="/courses/mastery/periodontics" element={<PeriodonticsPage />} />
-            <Route path="/courses/mastery/rotary-endodontics" element={<RotaryEndodonticsPage />} />
-            <Route path="/courses/mastery/orthodontist-assistant" element={<OrthodontistAssistantPage />} />
+              <Route path="/courses/mastery/fixed-orthodontics" element={<FixedOrthodonticsMasteryPage />} />
+              <Route path="/courses/mastery/cosmetic-dentistry" element={<CosmeticDentistryMasteryPage />} />
+              <Route path="/courses/mastery/crown-and-bridge" element={<CrownAndBridgePage />} />
+              <Route path="/courses/mastery/dental-implantology" element={<DentalImplantologyMasteryPage />} />
+              <Route path="/courses/mastery/dental-lab-technician" element={<DentalLabTechnologyPage />} />
+              <Route path="/courses/mastery/facial-aesthetics" element={<FacialAestheticsPage />} />
+              <Route path="/courses/mastery/basic-oral-surgery" element={<BasicOralSurgeryPage />} />
+              <Route path="/courses/mastery/laser-dentistry" element={<LaserDentistryPage />} />
+              <Route path="/courses/mastery/periodontics" element={<PeriodonticsPage />} />
+              <Route path="/courses/mastery/rotary-endodontics" element={<RotaryEndodonticsPage />} />
+              <Route path="/courses/mastery/orthodontist-assistant" element={<OrthodontistAssistantPage />} />
 
-            {/* online courses */}
-            <Route path="/courses/online/fixed-orthodontics" element={<OnlineFixedOrthodonticsPage />} />
-            <Route path="/courses/online/dental-implant" element={<OnlineDentalImplantPage />} />
-            <Route path="/courses/online/crown-and-bridge" element={<OnlineCrownAndBridgePage />} />
-            <Route path="/courses/online/endodontics" element={<OnlineEndodonticsPage />} />
-            <Route path="/courses/online/periodontics" element={<OnlinePeriodonticsPage />} />
-            <Route path="/courses/short-courses" element={<ShortCoursesPage />} />
-            <Route path="/courses/online/cosmetic-dentistry" element={<OnlineCosmeticDentistryPage />} />
+              {/* online courses */}
+              <Route path="/courses/online/fixed-orthodontics" element={<OnlineFixedOrthodonticsPage />} />
+              <Route path="/courses/online/dental-implant" element={<OnlineDentalImplantPage />} />
+              <Route path="/courses/online/crown-and-bridge" element={<OnlineCrownAndBridgePage />} />
+              <Route path="/courses/online/endodontics" element={<OnlineEndodonticsPage />} />
+              <Route path="/courses/online/periodontics" element={<OnlinePeriodonticsPage />} />
+              <Route path="/courses/short-courses" element={<ShortCoursesPage />} />
+              <Route path="/courses/online/cosmetic-dentistry" element={<OnlineCosmeticDentistryPage />} />
 
-            {/* auth */}
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/lms" element={<LMSPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+              {/* auth */}
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/lms" element={<LMSPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
 
-            {/* static */}
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
+              {/* static */}
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
 
-            {/* admin */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/course/new" element={<AdminCourseForm />} />
-            <Route path="/admin/course/:id/edit" element={<AdminCourseForm />} />
-            <Route path="/admin/video-library" element={<AdminVideoLibrary />} />
+              {/* admin */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/course/new" element={<AdminCourseForm />} />
+              <Route path="/admin/course/:id/edit" element={<AdminCourseForm />} />
+              <Route path="/admin/video-library" element={<AdminVideoLibrary />} />
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </AuthProvider>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 

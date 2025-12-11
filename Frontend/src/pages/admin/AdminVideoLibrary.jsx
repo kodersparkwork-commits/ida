@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../api';
+import { studentCourses } from '../../data/studentCourses';
+import Loader from '../../components/Loader';
 
 export default function AdminVideoLibrary() {
     const navigate = useNavigate();
@@ -12,6 +14,8 @@ export default function AdminVideoLibrary() {
     // Form states
     const [newFolderName, setNewFolderName] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedStudentCourse, setSelectedStudentCourse] = useState('');
+    const [assignType, setAssignType] = useState('main'); // 'main' or 'student'
     const [videoTitle, setVideoTitle] = useState('');
     const [embedTag, setEmbedTag] = useState('');
 
@@ -46,10 +50,12 @@ export default function AdminVideoLibrary() {
         try {
             await API.post('/api/video-folders', {
                 name: newFolderName,
-                courseId: selectedCourse || null
+                courseId: assignType === 'main' ? (selectedCourse || null) : null,
+                studentCourseId: assignType === 'student' ? (selectedStudentCourse || null) : null
             });
             setNewFolderName('');
             setSelectedCourse('');
+            setSelectedStudentCourse('');
             fetchFolders();
             alert('Folder created!');
         } catch (err) {
@@ -107,7 +113,7 @@ export default function AdminVideoLibrary() {
         }
     };
 
-    if (loading) return <div className="p-10 text-center">Loading...</div>;
+    if (loading) return <div className="min-h-screen pt-20 flex justify-center"><Loader text="Loading Library..." /></div>;
 
     return (
         <div className="min-h-screen bg-slate-50 py-12">
@@ -137,18 +143,51 @@ export default function AdminVideoLibrary() {
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none"
                                     required
                                 />
-                                <select
-                                    value={selectedCourse}
-                                    onChange={e => setSelectedCourse(e.target.value)}
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none bg-white"
-                                >
-                                    <option value="">-- Assign to Course (Optional) --</option>
-                                    {courses.map(course => (
-                                        <option key={course._id} value={course._id}>
-                                            {course.title}
-                                        </option>
-                                    ))}
-                                </select>
+                                {/* Assignment Type Toggle */}
+                                <div className="flex gap-2 p-1 bg-slate-100 rounded-lg">
+                                    <button
+                                        type="button"
+                                        onClick={() => setAssignType('main')}
+                                        className={`flex-1 py-1 text-xs font-semibold rounded ${assignType === 'main' ? 'bg-white shadow text-slate-800' : 'text-slate-500 hover:text-slate-700'}`}
+                                    >
+                                        Main Course
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setAssignType('student')}
+                                        className={`flex-1 py-1 text-xs font-semibold rounded ${assignType === 'student' ? 'bg-white shadow text-slate-800' : 'text-slate-500 hover:text-slate-700'}`}
+                                    >
+                                        Student Course
+                                    </button>
+                                </div>
+
+                                {assignType === 'main' ? (
+                                    <select
+                                        value={selectedCourse}
+                                        onChange={e => setSelectedCourse(e.target.value)}
+                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none bg-white"
+                                    >
+                                        <option value="">-- Assign to Main Course --</option>
+                                        {courses.map(course => (
+                                            <option key={course._id} value={course._id}>
+                                                {course.title}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <select
+                                        value={selectedStudentCourse}
+                                        onChange={e => setSelectedStudentCourse(e.target.value)}
+                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none bg-white"
+                                    >
+                                        <option value="">-- Assign to Student Course --</option>
+                                        {studentCourses.map(course => (
+                                            <option key={course.id} value={course.id}>
+                                                {course.title}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
                                 <button type="submit" className="w-full btn-brand py-2">Create Folder</button>
                             </form>
                         </div>
@@ -172,6 +211,11 @@ export default function AdminVideoLibrary() {
                                                 {folder.courseId && (
                                                     <span className="ml-2 text-[10px] uppercase tracking-wider bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
                                                         {folder.courseId.title}
+                                                    </span>
+                                                )}
+                                                {folder.studentCourseId && (
+                                                    <span className="ml-2 text-[10px] uppercase tracking-wider bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded border border-amber-100">
+                                                        {studentCourses.find(c => c.id === folder.studentCourseId)?.title || folder.studentCourseId}
                                                     </span>
                                                 )}
                                             </p>
@@ -224,9 +268,30 @@ export default function AdminVideoLibrary() {
                                                     onChange={e => setSelectedFolder({ ...selectedFolder, courseId: e.target.value || null })}
                                                     className="w-full px-3 py-1.5 border border-slate-300 rounded text-sm focus:ring-1 focus:ring-cyan-500 outline-none bg-white"
                                                 >
-                                                    <option value="">-- No Course Assigned --</option>
+                                                    <option value="">-- No Main Course Assigned --</option>
                                                     {courses.map(course => (
                                                         <option key={course._id} value={course._id}>
+                                                            {course.title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                                <label className="block text-xs text-slate-500 mb-1 mt-3">Assigned Student Course</label>
+                                                <select
+                                                    value={selectedFolder.studentCourseId || ''}
+                                                    onChange={e => {
+                                                        const newVal = e.target.value || null;
+                                                        // clear main course if setting student course, or allow both? usually mutually exclusive is cleaner
+                                                        // For now let's clear main course if student course is selected
+                                                        const updates = { ...selectedFolder, studentCourseId: newVal };
+                                                        if (newVal) updates.courseId = null;
+                                                        setSelectedFolder(updates);
+                                                    }}
+                                                    className="w-full px-3 py-1.5 border border-slate-300 rounded text-sm focus:ring-1 focus:ring-cyan-500 outline-none bg-white"
+                                                >
+                                                    <option value="">-- No Student Course Assigned --</option>
+                                                    {studentCourses.map(course => (
+                                                        <option key={course.id} value={course.id}>
                                                             {course.title}
                                                         </option>
                                                     ))}
@@ -239,7 +304,8 @@ export default function AdminVideoLibrary() {
                                                     try {
                                                         const res = await API.put(`/api/video-folders/${selectedFolder._id}`, {
                                                             name: selectedFolder.name,
-                                                            courseId: selectedFolder.courseId
+                                                            courseId: selectedFolder.courseId,
+                                                            studentCourseId: selectedFolder.studentCourseId
                                                         });
                                                         setFolders(prev => prev.map(f => f._id === res.data._id ? res.data : f));
                                                         setSelectedFolder(res.data); // Update with populated data

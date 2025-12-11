@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import API from '../api';
 import { studentCourses } from '../data/studentCourses';
 import { Lock, PlayCircle } from 'lucide-react';
+import Loader from '../components/Loader';
 
 export default function StudentCourseDetailPage() {
     const { courseId } = useParams();
@@ -10,7 +12,33 @@ export default function StudentCourseDetailPage() {
     const { user } = useAuth();
 
     // Find the course from data
+    const [folders, setFolders] = useState([]);
+    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [loadingInfo, setLoadingInfo] = useState(true);
+
+    // Find the course from data
     const course = studentCourses.find(c => c.id === courseId);
+
+    useEffect(() => {
+        if (courseId) {
+            fetchFolders();
+        }
+    }, [courseId]);
+
+    const fetchFolders = async () => {
+        try {
+            const res = await API.get(`/api/video-folders?studentCourseId=${courseId}`);
+            setFolders(res.data);
+            // Default to first video of first folder if available
+            if (res.data.length > 0 && res.data[0].videos.length > 0) {
+                setSelectedVideo(res.data[0].videos[0]);
+            }
+        } catch (err) {
+            console.error("Failed to fetch folders", err);
+        } finally {
+            setLoadingInfo(false);
+        }
+    };
 
     // Redirect if course not found
     useEffect(() => {
@@ -41,8 +69,20 @@ export default function StudentCourseDetailPage() {
                         {user ? (
                             <div className="space-y-8">
                                 {/* Vimeo Video Player */}
-                                <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
-                                    {course.vimeoId ? (
+                                <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg relative">
+                                    {loadingInfo && (
+                                        <div className="absolute inset-0 z-10 bg-slate-900 flex items-center justify-center">
+                                            <Loader text="Loading video..." />
+                                        </div>
+                                    )}
+                                    {selectedVideo ? (
+                                        <div className="w-full h-full">
+                                            <div
+                                                className="w-full h-full"
+                                                dangerouslySetInnerHTML={{ __html: selectedVideo.embedTag }}
+                                            />
+                                        </div>
+                                    ) : course.vimeoId ? (
                                         <iframe
                                             src={`https://player.vimeo.com/video/${course.vimeoId}?h=00000000&badge=0&autopause=0&player_id=0&app_id=58479`}
                                             width="100%"
@@ -55,18 +95,14 @@ export default function StudentCourseDetailPage() {
                                     ) : (
                                         <div className="w-full h-full flex flex-col items-center justify-center text-white/50 bg-slate-900">
                                             <PlayCircle className="h-16 w-16 mb-4 opacity-50" />
-                                            <p>Video content coming soon</p>
+                                            <p>Select a video to start watching</p>
                                         </div>
                                     )}
                                 </div>
 
                                 <div className="prose max-w-none text-slate-700">
-                                    <h3 className="text-xl font-semibold text-slate-900 mb-4">Course Description</h3>
+                                    <h3 className="text-xl font-semibold text-slate-900 mb-4">{selectedVideo ? selectedVideo.title : 'Course Description'}</h3>
                                     <p>{course.description}</p>
-                                    <p className="mt-4">
-                                        This comprehensive course covers all essential aspects of {course.title.toLowerCase()} for dental students.
-                                        Watch the lectures above to master the concepts.
-                                    </p>
                                 </div>
                             </div>
                         ) : (
@@ -108,8 +144,49 @@ export default function StudentCourseDetailPage() {
                                     <span>Level:</span>
                                     <span className="font-semibold">Dental Student</span>
                                 </li>
+                                <li className="flex justify-between">
+                                    <span>Modules:</span>
+                                    <span className="font-semibold">{folders.length}</span>
+                                </li>
                             </ul>
                         </div>
+
+                        {/* Video Playlist - Only show if logged in */}
+                        {user && folders.length > 0 && (
+                            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                                <div className="p-4 bg-slate-50 border-b border-slate-200">
+                                    <h3 className="font-bold text-slate-800">Course Content</h3>
+                                </div>
+                                <div className="max-h-[500px] overflow-y-auto">
+                                    {folders.map(folder => (
+                                        <div key={folder._id}>
+                                            <div className="px-4 py-2 bg-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider sticky top-0">
+                                                {folder.name}
+                                            </div>
+                                            <div className="divide-y divide-slate-100">
+                                                {folder.videos.map(video => (
+                                                    <button
+                                                        key={video._id}
+                                                        onClick={() => setSelectedVideo(video)}
+                                                        className={`w-full text-left p-3 hover:bg-slate-50 transition-colors flex items-start gap-3 ${selectedVideo?._id === video._id ? 'bg-cyan-50 border-l-4 border-cyan-500' : ''}`}
+                                                    >
+                                                        <PlayCircle className={`h-5 w-5 flex-shrink-0 mt-0.5 ${selectedVideo?._id === video._id ? 'text-cyan-600' : 'text-slate-400'}`} />
+                                                        <div>
+                                                            <p className={`text-sm font-medium ${selectedVideo?._id === video._id ? 'text-cyan-900' : 'text-slate-700'}`}>
+                                                                {video.title}
+                                                            </p>
+                                                            <p className="text-xs text-slate-400 mt-1">
+                                                                Video
+                                                            </p>
+                                                        </div>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

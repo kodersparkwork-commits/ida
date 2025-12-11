@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../components/Notification';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -10,18 +11,26 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+  const notify = useNotification();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     if (isSignUp) {
       const { error } = await signUp(email, password, fullName);
-      if (error) setError(error.message || error);
-      else navigate('/courses');
+      if (error) {
+        notify.error(String(error));
+      } else {
+        notify.success('Account created successfully!');
+        navigate('/courses');
+      }
     } else {
       const { error } = await signIn(email, password);
-      if (error) setError(error.message || error);
-      else navigate('/courses');
+      if (error) {
+        notify.error(String(error));
+      } else {
+        notify.success('Welcome back!');
+        navigate('/courses');
+      }
     }
   };
 
@@ -35,10 +44,10 @@ export default function AuthPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
-              <input value={fullName} onChange={(e)=>setFullName(e.target.value)} placeholder="Full name" className="w-full px-4 py-2 border rounded" required />
+              <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Full name" className="w-full px-4 py-2 border rounded" required />
             )}
-            <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" type="email" className="w-full px-4 py-2 border rounded" required />
-            <input value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" type="password" className="w-full px-4 py-2 border rounded" required />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="email" className="w-full px-4 py-2 border rounded" required />
+            <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="password" className="w-full px-4 py-2 border rounded" required />
             <button className="w-full py-2 bg-blue-600 text-white rounded">{isSignUp ? 'Create' : 'Sign In'}</button>
           </form>
 

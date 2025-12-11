@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import API, { setAuthToken } from '../api';
+import Loader from '../components/Loader';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [tokenChecked, setTokenChecked] = useState(false);
+  const [globalLoading, setGlobalLoading] = useState(false);
 
   // load token from localStorage and fetch profile
   useEffect(() => {
@@ -31,6 +33,7 @@ export function AuthProvider({ children }) {
   }
 
   async function signIn(email, password) {
+    setGlobalLoading(true);
     try {
       const { data } = await API.post('/api/auth/login', { email, password });
       if (data.token) {
@@ -40,7 +43,10 @@ export function AuthProvider({ children }) {
       }
       return { error: new Error('Invalid response from server') };
     } catch (err) {
-      return { error: err.response?.data?.error || err };
+      const msg = err.response?.data?.message || err.response?.data?.error || 'Login failed';
+      return { error: msg };
+    } finally {
+      setGlobalLoading(false);
     }
   }
 
@@ -70,12 +76,17 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
+    setGlobalLoading(true);
+    // Simulate a small delay for better UX (optional, but requested "time also")
+    await new Promise(resolve => setTimeout(resolve, 800));
     setUser(null);
     setAuthToken(null);
+    setGlobalLoading(false);
   }
 
   return (
     <AuthContext.Provider value={{ user, tokenChecked, signIn, signUp, signOut, updateProfile }}>
+      {globalLoading && <Loader fullScreen text="Processing..." />}
       {children}
     </AuthContext.Provider>
   );
