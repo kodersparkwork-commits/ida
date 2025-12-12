@@ -28,7 +28,7 @@ export default function HomePage() {
       icon: Stethoscope,
       title: "Clinical Focus",
       description:
-        "Cadaver labs, chairside mentoring, and evidence-led case reviews",
+        "Chairside mentoring and evidence-led case reviews",
     },
     {
       icon: Shield,
@@ -116,44 +116,44 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-cyan-50">
       <section
-  className="relative overflow-hidden text-white py-24 lg:py-32 bg-cover bg-center bg-no-repeat"
-  style={{
-    backgroundImage: "url('https://cdn.pixabay.com/photo/2020/05/06/20/31/air-purifier-5139091_1280.jpg?auto=format&fit=crop&w=1600&q=80')",
-  }}
->
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-black/40"></div>
+        className="relative overflow-hidden text-white py-24 lg:py-32 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('https://cdn.pixabay.com/photo/2020/05/06/20/31/air-purifier-5139091_1280.jpg?auto=format&fit=crop&w=1600&q=80')",
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40"></div>
 
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="flex flex-col items-center text-center gap-6">
-      <span className="badge-pill bg-white/15 text-white">
-        <Sparkles className="h-4 w-4" />
-        India’s most trusted dental academy
-      </span>
-      <h1 className="text-4xl lg:text-6xl font-semibold leading-tight max-w-4xl">
-        Elevate Your{" "}
-        <span className="text-emerald-200">Clinical Precision</span> with
-        immersive dental programs
-      </h1>
-      <p className="text-lg lg:text-2xl max-w-3xl text-white/80">
-        20+ years of curated mentorship, cadaver labs, and omnichannel
-        learning to help you own every procedure with confidence.
-      </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center text-center gap-6">
+            <span className="badge-pill bg-white/15 text-white">
+              <Sparkles className="h-4 w-4" />
+              India’s most trusted dental academy
+            </span>
+            <h1 className="text-4xl lg:text-6xl font-semibold leading-tight max-w-4xl">
+              Elevate Your{" "}
+              <span className="text-emerald-200">Clinical Precision</span> with
+              immersive dental programs
+            </h1>
+            <p className="text-lg lg:text-2xl max-w-3xl text-white/80">
+              20+ years of curated mentorship, cadaver labs, and omnichannel
+              learning to help you own every procedure with confidence.
+            </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <button onClick={() => navigate("/courses")} className="btn-brand">
-          Explore Programs
-        </button>
-        <button
-          onClick={() => navigate("/contact")}
-          className="btn-ghost !text-white border-white/40 hover:bg-white/10"
-        >
-          Connect with a Mentor
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button onClick={() => navigate("/courses")} className="btn-brand">
+                Explore Programs
+              </button>
+              <button
+                onClick={() => navigate("/contact")}
+                className="btn-ghost !text-white border-white/40 hover:bg-white/10"
+              >
+                Connect with a Mentor
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -16,7 +16,7 @@ export default function StudentCoursesPage() {
                             Department of Orthodontics
                         </span>
                         <h1 className="mt-2 text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-                            Student <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Orthodontics</span> Series
+                            Student <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Courses</span>
                         </h1>
                         <p className="text-xl text-slate-600 leading-relaxed">
                             Master the fundamentals of orthodontics with our comprehensive video curriculum designed specifically for dental students.
@@ -73,25 +73,6 @@ export default function StudentCoursesPage() {
                                 <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
                                     {course.title}
                                 </h3>
-
-                                {course.content && course.content.length > 0 ? (
-                                    <ul className="mb-6 space-y-1">
-                                        {course.content.slice(0, 3).map((item, idx) => (
-                                            <li key={idx} className="text-slate-600 text-sm flex items-start gap-2">
-                                                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mt-1.5 shrink-0"></span>
-                                                <span className="line-clamp-1">{item}</span>
-                                            </li>
-                                        ))}
-                                        {course.content.length > 3 && (
-                                            <li className="text-blue-500 text-xs font-medium pl-3.5">
-                                                +{course.content.length - 3} more topics
-                                            </li>
-                                        )}
-                                    </ul>
-                                ) : (
-                                    <p className="text-slate-500 text-sm mb-6 italic">No topics listed.</p>
-                                )}
-
                                 <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
                                     <span className="text-slate-500 text-sm font-medium flex items-center gap-2">
                                         <BookOpen className="w-4 h-4" />

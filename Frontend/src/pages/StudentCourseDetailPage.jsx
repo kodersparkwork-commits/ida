@@ -95,7 +95,7 @@ export default function StudentCourseDetailPage() {
                                     ) : (
                                         <div className="w-full h-full flex flex-col items-center justify-center text-white/50 bg-slate-900">
                                             <PlayCircle className="h-16 w-16 mb-4 opacity-50" />
-                                            <p>Select a video to start watching</p>
+                                            <p>Courses coming soon</p>
                                         </div>
                                     )}
                                 </div>
@@ -104,6 +104,10 @@ export default function StudentCourseDetailPage() {
                                     <h3 className="text-xl font-semibold text-slate-900 mb-4">{selectedVideo ? selectedVideo.title : 'Course Description'}</h3>
                                     <p>{course.description}</p>
                                 </div>
+
+
+                                {/* Syllabus Section */}
+
                             </div>
                         ) : (
                             /* Locked State */
@@ -123,6 +127,23 @@ export default function StudentCourseDetailPage() {
                                 >
                                     Sign In to Access
                                 </button>
+                            </div>
+                        )}
+
+
+                        {/* Syllabus Section - Visible to All */}
+                        {course.syllabus && course.syllabus.length > 0 && (
+                            <div className="mt-12 border-t border-slate-200 pt-8">
+                                <h2 className="text-2xl font-bold text-slate-900 mb-6">Detailed Syllabus</h2>
+                                <div className="space-y-4">
+                                    {course.syllabus.map((item, index) => (
+                                        <div key={index} className="bg-slate-50 border border-slate-100 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                                            <p className="text-slate-700 leading-relaxed font-medium">
+                                                {item}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
@@ -150,6 +171,33 @@ export default function StudentCourseDetailPage() {
                                 </li>
                             </ul>
                         </div>
+
+                        {/* YouTube Playlist Button */}
+                        {course.youtubePlaylist && (
+                            <a
+                                href={course.youtubePlaylist}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block w-full"
+                            >
+                                <div className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl shadow-sm transition-colors flex items-center justify-between group">
+                                    <div className="flex items-center gap-3">
+                                        <div className="bg-white/20 p-2 rounded-lg group-hover:bg-white/30 transition-colors">
+                                            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-lg leading-tight">Watch Playlist</h3>
+                                            <p className="text-red-100 text-sm">View full course videos on YouTube</p>
+                                        </div>
+                                    </div>
+                                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </div>
+                            </a>
+                        )}
 
                         {/* Video Playlist - Only show if logged in */}
                         {user && folders.length > 0 && (
@@ -190,6 +238,7 @@ export default function StudentCourseDetailPage() {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }
