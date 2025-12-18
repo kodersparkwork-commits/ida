@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { studentCourses } from '../../data/studentCourses';
 import { BookOpen, ArrowRight, PlayCircle } from 'lucide-react';
 
 export default function StudentCoursesPage() {
-    const navigate = useNavigate();
+    const [playingCourseId, setPlayingCourseId] = useState(null);
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -56,17 +56,41 @@ export default function StudentCoursesPage() {
                         >
                             {/* Image Aspect Ratio Container */}
                             <div className="relative aspect-video overflow-hidden bg-slate-100">
-                                <img
-                                    src={course.image}
-                                    alt={course.title}
-                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                    <span className="text-white font-medium flex items-center gap-2">
-                                        <PlayCircle className="w-5 h-5" />
-                                        Start Learning
-                                    </span>
-                                </div>
+                                {playingCourseId === course.id && course.youtubePlaylist ? (
+                                    <iframe
+                                        src={
+                                            (course.youtubePlaylist.includes('playlist?list=')
+                                                ? course.youtubePlaylist.replace('playlist?list=', 'embed/videoseries?list=')
+                                                : course.youtubePlaylist.includes('youtu.be/')
+                                                    ? `https://www.youtube.com/embed/${course.youtubePlaylist.split('youtu.be/')[1].split('?')[0]}`
+                                                    : course.youtubePlaylist) + '?autoplay=1'
+                                        }
+                                        title={course.title}
+                                        className="w-full h-full"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : (
+                                    <>
+                                        <img
+                                            src={course.image}
+                                            alt={course.title}
+                                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setPlayingCourseId(course.id);
+                                                }}
+                                                className="text-white font-medium flex items-center gap-2 hover:text-blue-400 transition-colors"
+                                            >
+                                                <PlayCircle className="w-8 h-8" />
+                                                <span className="text-lg">Watch Video</span>
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             <div className="p-6 flex-1 flex flex-col">

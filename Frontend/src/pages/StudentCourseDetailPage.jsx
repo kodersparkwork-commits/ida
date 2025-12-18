@@ -65,6 +65,25 @@ export default function StudentCourseDetailPage() {
                     <div className="lg:col-span-2 space-y-8">
                         <h1 className="text-4xl font-bold text-slate-900">{course.title}</h1>
 
+                        {/* Course Video */}
+                        {course.youtubePlaylist && (
+                            <div className="rounded-2xl overflow-hidden shadow-lg aspect-video">
+                                <iframe
+                                    src={
+                                        course.youtubePlaylist.includes('playlist?list=')
+                                            ? course.youtubePlaylist.replace('playlist?list=', 'embed/videoseries?list=')
+                                            : course.youtubePlaylist.includes('youtu.be/')
+                                                ? `https://www.youtube.com/embed/${course.youtubePlaylist.split('youtu.be/')[1].split('?')[0]}`
+                                                : course.youtubePlaylist
+                                    }
+                                    title={course.title}
+                                    className="w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                        )}
+
                         {/* Enrollment CTA - Visible to All */}
                         <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-2xl p-12 text-center space-y-6">
                             <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
@@ -117,6 +136,14 @@ export default function StudentCourseDetailPage() {
                         <div className="bg-cyan-50 p-6 rounded-xl border border-cyan-100">
                             <h3 className="text-lg font-semibold text-cyan-900 mb-3">Course Details</h3>
                             <ul className="space-y-3 text-cyan-800 text-sm">
+                                <li className="flex justify-between">
+                                    <span>Fee:</span>
+                                    <span className="font-semibold">100 USD</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <span>Validity:</span>
+                                    <span className="font-semibold">1 Year</span>
+                                </li>
                                 <li className="flex justify-between">
                                     <span>Access:</span>
                                     <span className="font-semibold">{user ? 'Unlocked' : 'Restricted'}</span>
