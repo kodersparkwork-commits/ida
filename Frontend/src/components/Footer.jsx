@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
           <div>
@@ -60,7 +60,7 @@ export function Footer() {
               <div className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 shrink-0 mt-0.5" />
                 <span>
-                  Flat no-503, 5th Floor, MVS Heights, Vinayaka nagar, Khanamet, Madhapur, Hyderabad-500081, Telangana, India
+                  Flat no-102, Tirumala Mansion,Plot no-120, Survey no-41,Guttala Begumpet,Kavuri hills, Madhapur, Hyderabad -500033
                 </span>
               </div>
 

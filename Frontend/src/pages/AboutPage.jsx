@@ -120,7 +120,7 @@ export default function AboutPage() {
                 Indian Dental Academy is committed to providing comprehensive and affordable dental education to professionals at every stage of their career.
               </p>
               <p className="text-slate-600 leading-relaxed">
-                We bridge the gap between academic learning and clinical practice through cadaver labs, chairside mentorship, and evidence-led pedagogy.
+                We bridge the gap between academic learning and clinical practice through  chairside mentorship, and evidence-led pedagogy.
               </p>
               <p className="text-slate-600 leading-relaxed">
                 Our goal is to make world-class dental education accessible to every practitioner who wants to lead with precision.
