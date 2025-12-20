@@ -4,7 +4,7 @@ import { useNotification } from "../components/Notification";
 import emailjs from '@emailjs/browser';
 
 export function ContactPage() {
-  const { notify } = useNotification();
+  const notify = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,14 +16,14 @@ export function ContactPage() {
     e.preventDefault();
 
     // EMAILJS CONFIGURATION - REPLACE THESE WITH YOUR ACTUAL KEYS
-    const SERVICE_ID = 'YOUR_SERVICE_ID';
-    const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-    const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+    const SERVICE_ID = 'service_qgpif4m';
+    const TEMPLATE_ID = 'template_jfzda0s';
+    const PUBLIC_KEY = 'o7nWCv6DIEj-vTqeu';
 
     const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      subject: formData.subject,
+      name: formData.name,
+      email: formData.email,
+      title: formData.subject,
       message: formData.message,
     };
 
