@@ -90,7 +90,7 @@ function App() {
               <Route path="/courses/mastery" element={<MasteryPage />} />
               <Route path="/courses/exam" element={<ExamCoursesPage />} />
               <Route path="/courses/student" element={<StudentCoursesPage />} />
-              <Route path="/courses/student/:courseId" element={<StudentCourseDetailPage />} />
+              <Route path="/courses/student/:slug" element={<StudentCourseDetailPage />} />
 
               {/* Static Course Details */}
               <Route path="/courses/fellowship/fixed-orthodontics" element={<FixedOrthodonticsPage />} />

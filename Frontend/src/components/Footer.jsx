@@ -81,7 +81,7 @@ export function Footer() {
 
               <div className="flex space-x-4 mt-4">
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/share/187xtnXXQk/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -90,7 +90,7 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/ida_dental"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -99,7 +99,7 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/indiandentalacademy?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"

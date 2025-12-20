@@ -21,7 +21,8 @@ const sendContactEmail = async (req, res) => {
         });
 
         const mailOptions = {
-            from: `"${name}" <${email}>`, // sender address (note: gmail overrides this to auth user, but it's good practice)
+            from: `"${name}" <${process.env.EMAIL_USER}>`, // Send from auth user to avoid spoofing checks
+            replyTo: email, // Replies go to the user
             to: 'Indiandentalacademy@gmail.com', // list of receivers
             subject: `New Contact Form Submission: ${subject}`, // Subject line
             html: `

@@ -2,8 +2,9 @@ export const studentCourses = [
     {
         id: "1",
         title: "General Human Anatomy including Embryology and Histology",
+        slug: "anatomy",
         image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/j27mhUn9mN8?si=BoppVuhh_2udr7SQ",
+        youtubePlaylist: "https://youtu.be/4XMStYVL0aU?si=bcEIOdwXBw_KCcG-",
         syllabus: [
             "I. INTRODUCTION TO : Anatomical terms, Skin, superficial fascia & deep fascia, Cardiovascular system, portal system collateral circulation and arteries, Lymphatic system, regional lymph nodes, Osteology - Including ossification & growth of bones, Myology – Including types of muscle tissue & innervation, Syndesmology – Including classification of Joints, Nervous system",
             "II. HEAD & NECK: Scalp, face & temple, lacrimal apparatus, Neck - Deep fascia of neck, posterior triangle, suboccipital triangle, anterior triangle, anterior median region of the neck, deep structures in the neck, Cranial cavity - Meninges, parts of brain, ventricles of brain, dural venous sinuses, cranial nerves attached to the brain, pituitary gland, Cranial nerves - III, IV, V, VI, VII, IX,XII in detail, Orbital cavity – Muscles of the eye ball, supports of the eye ball, nerves and vessels in the orbit, Parotid gland, Temporo mandibular joint, muscles of mastication, infratemporal fossa, pterygo - palatine fossa, Submandibular region, Walls of the nasal cavity, paranasal air sinuses, Palate, Oral cavity, Tongue, Pharynx (palatine tonsil and the auditory tube) Larynx, OSTEOLOGY – Foetal skull, adult skull, individual bones of the skull, hyoid bone and cervical vertebrae.",
@@ -15,6 +16,7 @@ export const studentCourses = [
     {
         id: "2",
         title: "General Human Physiology and Biochemistry, Nutrition and Dietics",
+        slug: "physiology",
         image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/q51GX6d979U?si=yfdPK3dOJoTZlPib",
         syllabus: [
@@ -45,8 +47,9 @@ export const studentCourses = [
     {
         id: "3",
         title: "Dental Anatomy, Embryology and Oral Histology",
+        slug: "dental-anatomy",
         image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/gzsgqALnk_0?si=tlSnJOa-DmTXcod_",
+        youtubePlaylist: "https://youtu.be/j27mhUn9mN8?si=BoppVuhh_2udr7SQ",
         syllabus: [
             "I. TOOTH MORPHOLOGY: Introduction (notation, surfaces), Morphology of permanent teeth, Morphology of Deciduous teeth, Occlusion",
             "II. ORAL EMBRYOLOGY: Development of face/jaws/lip/palate/tongue, Development of teeth (stages, calcified tissues), Eruption, Shedding",
@@ -57,8 +60,9 @@ export const studentCourses = [
     {
         id: "4",
         title: "Dental Materials",
+        slug: "dental-materials",
         image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/ey8Pl_-jQFw?si=kpRPA584H20tZL4x",
+        youtubePlaylist: "https://youtu.be/ZqV4qY8oYHk?si=7aYey484rI7DYtVz",
         syllabus: [
             "1. SCOPE of dental materials",
             "2. STRUCTURE OF MATTER AND PRINCIPLES OF ADHESION",
@@ -82,8 +86,9 @@ export const studentCourses = [
     {
         id: "5",
         title: "General Pathology and Microbiology",
+        slug: "pathology",
         image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/ZqV4qY8oYHk?si=YGGT8f2473fxHvkw",
+        youtubePlaylist: "https://youtu.be/ey8Pl_-jQFw?si=2Xj6rTsCd7cMdb6x",
         syllabus: [
             "A. GENERAL PATHOLOGY",
             "1. Introduction to Pathology: Cell structure/function",
@@ -120,8 +125,9 @@ export const studentCourses = [
     {
         id: "6",
         title: "General and Dental Pharmacology and Therapeutics",
+        slug: "pharmacology",
         image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/q51GX6d979U?si=s7Vh8rK6px9Q8JmU",
+        youtubePlaylist: "https://youtu.be/19Mk_N_L2k8?si=BT3EbjyZUwdfDC1C",
         syllabus: [
             "I. GENERAL PHARMACOLOGY",
             "1. General principles: Dosage, Pharmacokinetics, Drug action, Adverse reactions",
@@ -144,8 +150,9 @@ export const studentCourses = [
     {
         id: "7",
         title: "General Medicine",
+        slug: "general-medicine",
         image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/ZOuHYW1rJHk?si=VLNhK1Xx8iogaDqH",
+        youtubePlaylist: "https://youtu.be/lckbKaYuplE?si=L54jiDBmi1xqkFH7",
         syllabus: [
             "1. Introduction: Aims, signs/symptoms, Infectious mononucleosis, mumps, measles, Malaria",
             "2. Infections: Enteric fever, AIDS, Herpes, Syphilis, Diphtheria",
@@ -163,6 +170,7 @@ export const studentCourses = [
     {
         id: "8",
         title: "General Surgery",
+        slug: "general-surgery",
         image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/ZH_Thwesirs?si=5_NjN2I7Uxw1OFm6",
         syllabus: [
@@ -188,6 +196,7 @@ export const studentCourses = [
     {
         id: "9",
         title: "Oral Pathology and Oral Microbiology",
+        slug: "oral-pathology",
         image: "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/ncPXhAJN9YM?si=dxTetOWeelOqOPDA",
         syllabus: [
@@ -215,6 +224,7 @@ export const studentCourses = [
     {
         id: "10",
         title: "Orthodontics & dentofacial orthopaedics",
+        slug: "orthodontics",
         image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/P9t1CDxTN6E?si=qKfbOLSJLNWlddeW",
         syllabus: [
@@ -244,6 +254,7 @@ export const studentCourses = [
     {
         id: "11",
         title: "Oral Medicine & Radiology",
+        slug: "oral-medicine",
         image: "https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/raxxQUBPQlk?si=UODJ8pZxAECZZW2D",
         syllabus: [
@@ -275,8 +286,9 @@ export const studentCourses = [
     {
         id: "12",
         title: "Paediatric & Preventive Dentistry",
+        slug: "pedodontics",
         image: "https://plus.unsplash.com/premium_photo-1661764256397-af154e87b1b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/lckbKaYuplE?si=Qg_WxJUtH8AOo9vn",
+        youtubePlaylist: "https://youtu.be/nV7INVPbYns?si=HO_E4G970aBunJTS",
         syllabus: [
             "1. INTRODUCTION TO PEDODONTICS",
             "2. GROWTH & DEVELOPMENT",
@@ -308,6 +320,7 @@ export const studentCourses = [
     {
         id: "13",
         title: "Periodontology",
+        slug: "periodontology",
         image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/Gxox5PvhcYg?si=qgYu49onwJLFzlAo",
         syllabus: [
@@ -346,8 +359,9 @@ export const studentCourses = [
     {
         id: "14",
         title: "Oral & Maxillofacial Surgery",
+        slug: "oral-surgery",
         image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        youtubePlaylist: "https://youtu.be/Gxox5PvhcYg?si=h-Qmkwyv2xc02BVE",
+        youtubePlaylist: "https://youtu.be/4FF4OwSRLpk?si=_rN5Sh4SRnW0ovcu",
         syllabus: [
             "1. Introduction, Aims, Objectives",
             "2. Diagnosis in oral surgery",
@@ -377,6 +391,7 @@ export const studentCourses = [
     {
         id: "15",
         title: "Prosthodontics and Crown & Bridge",
+        slug: "prosthodontics",
         image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/8Y-EJdKoZTU?si=vCyiX8fbGLR__QAC",
         syllabus: [
@@ -413,6 +428,7 @@ export const studentCourses = [
     {
         id: "16",
         title: "Conservative Dentistry and Endodontics",
+        slug: "endodontics",
         image: "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/TK4CorGAEnQ?si=6vTY57aWyouk82g6",
         syllabus: [
@@ -466,6 +482,7 @@ export const studentCourses = [
     {
         id: "17",
         title: "Public Health Dentistry",
+        slug: "public-health",
         image: "https://plus.unsplash.com/premium_photo-1673953509975-576678fa6710?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         youtubePlaylist: "https://youtu.be/TIpu6D6ZeMo?si=zBKlSeMj3EB4rg6q",
         syllabus: [

@@ -1,7 +1,10 @@
 import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { useNotification } from "../components/Notification";
+import emailjs from '@emailjs/browser';
 
 export function ContactPage() {
+  const { notify } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,34 +12,33 @@ export function ContactPage() {
     message: "",
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(false);
 
-    try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    // EMAILJS CONFIGURATION - REPLACE THESE WITH YOUR ACTUAL KEYS
+    const SERVICE_ID = 'YOUR_SERVICE_ID';
+    const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
 
-      const data = await response.json();
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
 
-      if (response.ok) {
-        setSubmitted(true);
+    notify.info("Sending message...", 2000);
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        notify.success("Message sent successfully!");
         setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setSubmitted(false), 5000);
-      } else {
-        alert(data.message || 'Something went wrong');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again later.');
-    }
+      })
+      .catch((err) => {
+        console.error('FAILED...', err);
+        notify.error("Failed to send message. Please check keys.");
+      });
   };
 
   return (
@@ -64,11 +66,11 @@ export function ContactPage() {
                   title: 'Address',
                   body: (
                     <>
-                      Flat no-503, 5th Floor, MVS Heights,
+                      Flat no-102, Tirumala Mansion,Plot no-120,
                       <br />
-                      Vinayaka nagar, Khanamet, Madhapur,
+                      Survey no-41,Guttala Begumpet,Kavuri hills,
                       <br />
-                      Hyderabad-500081, Telangana, India
+                      Madhapur, Hyderabad -500033
                     </>
                   ),
                 },
@@ -117,13 +119,6 @@ export function ContactPage() {
           {/* Contact Form */}
           <div className="card-glass p-8">
             <h2 className="text-2xl font-semibold text-slate-900 mb-6">Send us a Message</h2>
-
-            {submitted && (
-              <div className="alert alert-success mb-6">
-                <Send className="h-4 w-4" />
-                Your request is in. Expect a response shortly.
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {[

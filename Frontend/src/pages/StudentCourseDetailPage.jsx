@@ -7,7 +7,7 @@ import { Lock, PlayCircle } from 'lucide-react';
 import Loader from '../components/Loader';
 
 export default function StudentCourseDetailPage() {
-    const { courseId } = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
 
@@ -17,17 +17,17 @@ export default function StudentCourseDetailPage() {
     const [loadingInfo, setLoadingInfo] = useState(true);
 
     // Find the course from data
-    const course = studentCourses.find(c => c.id === courseId);
+    const course = studentCourses.find(c => c.slug === slug);
 
     useEffect(() => {
-        if (courseId) {
+        if (course?.id) {
             fetchFolders();
         }
-    }, [courseId]);
+    }, [course]);
 
     const fetchFolders = async () => {
         try {
-            const res = await API.get(`/api/video-folders?studentCourseId=${courseId}`);
+            const res = await API.get(`/api/video-folders?studentCourseId=${course.id}`);
             setFolders(res.data);
             // Default to first video of first folder if available
             if (res.data.length > 0 && res.data[0].videos.length > 0) {
