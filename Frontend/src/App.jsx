@@ -6,6 +6,7 @@ import { setAdminToken } from './api';
 
 import Navbar from './components/Navbar';
 import { Footer } from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // user pages
 import HomePage from './pages/HomePage';
@@ -74,6 +75,7 @@ function App() {
   return (
     <NotificationProvider>
       <AuthProvider>
+        <ScrollToTop />
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="grow">
