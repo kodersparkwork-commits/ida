@@ -4,7 +4,7 @@ export default function ExamCoursesPage() {
     return (
         <div className="min-h-screen bg-white py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-4xl font-bold text-slate-900 mb-8">Exam Courses</h1>
+                <h1 className="text-4xl font-bold text-slate-900 mb-8">Other Countries Exam Courses</h1>
 
                 <div className="space-y-8 text-slate-700">
                     <section>
