@@ -127,6 +127,15 @@ export default function Navbar() {
               Student Courses
             </Link>
 
+            <a
+              href="https://gotolectures.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-slate-600 hover:text-cyan-700 transition"
+            >
+              Exam Courses
+            </a>
+
             {navItems.map((item) => (
               <Link
                 key={item.to}
@@ -137,14 +146,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <a
-              href="https://gotolectures.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-slate-600 hover:text-cyan-700 transition"
-            >
-             Exam Courses
-            </a>
+
 
             {user ? (
               <>
@@ -258,6 +260,16 @@ export default function Navbar() {
               </div>
             </Link>
 
+            <a
+              href="https://gotolectures.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block rounded-2xl px-4 py-3 text-base font-medium text-slate-600 hover:bg-slate-50"
+            >
+              Exam Courses
+            </a>
+
             {navItems.map((item) => (
               <Link
                 key={item.to}
@@ -269,15 +281,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <a
-              href="https://gotolectures.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className="block rounded-2xl px-4 py-3 text-base font-medium text-slate-600 hover:bg-slate-50"
-            >
-              GoToLectures
-            </a>
+
 
             {user ? (
               <>
